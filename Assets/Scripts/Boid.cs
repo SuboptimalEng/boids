@@ -44,7 +44,6 @@ public class Boid : MonoBehaviour
             Debug.DrawLine(startPosition, endPosition, Color.green);
 
             RaycastHit hit;
-            // Does the ray intersect any objects excluding the player layer
             if (
                 Physics.Raycast(
                     startPosition,
@@ -58,26 +57,6 @@ public class Boid : MonoBehaviour
                 Debug.DrawRay(startPosition, fovDirection * hit.distance, Color.red);
                 Debug.Log("Did Hit");
             }
-
-            // RaycastHit hit;
-            // // Does the ray intersect any objects excluding the player layer
-            // if (
-            //     Physics.Raycast(
-            //         transform.position,
-            //         transform.TransformDirection(Vector3.forward),
-            //         out hit,
-            //         Mathf.Infinity,
-            //         layerMask
-            //     )
-            // )
-            // {
-            //     Debug.DrawRay(
-            //         transform.position,
-            //         transform.TransformDirection(Vector3.forward) * hit.distance,
-            //         Color.yellow
-            //     );
-            //     Debug.Log("Did Hit");
-            // }
         }
     }
 }
