@@ -4,15 +4,80 @@ using UnityEngine;
 
 public class Boid : MonoBehaviour
 {
-    public int speed = 1;
-    public Vector3 dir = Vector3.forward;
+    [Range(1, 20)]
+    public int speed;
 
-    // Start is called before the first frame update
-    void Start() { }
+    [Range(1, 5)]
+    public int lookAheadDist;
 
-    // Update is called once per frame
+    [Range(1, 40)]
+    public int fovPrecision;
+
+    public LayerMask hittableLayerMask;
+
+    public static float maxNumOfDegrees = 360f;
+
+    Vector3 moveDirection;
+
+    void Start()
+    {
+        moveDirection = Vector3.forward;
+    }
+
     void Update()
     {
-        transform.position += dir * speed * Time.deltaTime;
+        Vector3 startPosition = transform.position;
+
+        float fovDegreeIncrement = maxNumOfDegrees / fovPrecision;
+
+        for (float degrees = 0; degrees < maxNumOfDegrees; degrees += fovDegreeIncrement)
+        {
+            float fovRadian = degrees * Mathf.Deg2Rad;
+            Vector3 fovDirection = new Vector3(
+                (float)Mathf.Cos(fovRadian),
+                0,
+                (float)Mathf.Sin(fovRadian)
+            );
+
+            Vector3 endPosition = startPosition + fovDirection * lookAheadDist;
+
+            Debug.DrawLine(startPosition, endPosition, Color.green);
+
+            RaycastHit hit;
+            // Does the ray intersect any objects excluding the player layer
+            if (
+                Physics.Raycast(
+                    startPosition,
+                    fovDirection,
+                    out hit,
+                    lookAheadDist,
+                    hittableLayerMask
+                )
+            )
+            {
+                Debug.DrawRay(startPosition, fovDirection * hit.distance, Color.red);
+                Debug.Log("Did Hit");
+            }
+
+            // RaycastHit hit;
+            // // Does the ray intersect any objects excluding the player layer
+            // if (
+            //     Physics.Raycast(
+            //         transform.position,
+            //         transform.TransformDirection(Vector3.forward),
+            //         out hit,
+            //         Mathf.Infinity,
+            //         layerMask
+            //     )
+            // )
+            // {
+            //     Debug.DrawRay(
+            //         transform.position,
+            //         transform.TransformDirection(Vector3.forward) * hit.distance,
+            //         Color.yellow
+            //     );
+            //     Debug.Log("Did Hit");
+            // }
+        }
     }
 }
