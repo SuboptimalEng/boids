@@ -1,2 +1,3 @@
-# boids
-🐟 Simulating boids.
+# 🐟 Boids
+
+Simulating boids.
