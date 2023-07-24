@@ -5,78 +5,70 @@ using UnityEngine;
 public class Boid : MonoBehaviour
 {
     [Range(1, 4)]
-    public int speed;
-
-    [Range(1, 4)]
-    public int lookAheadDist;
-
-    [Range(1, 32)]
-    public int fovPrecision;
+    public int movementSpeed;
 
     [Range(1, 8)]
     public int rotationSpeed;
 
+    [Range(1, 4)]
+    public int lookAheadDist;
+
+    [Range(8, 32)]
+    public int fovPrecision;
+    float fovDegreeIncrement;
+    float maxNumOfDegrees = 360f;
+
     public LayerMask hittableLayerMask;
 
-    public static float maxNumOfDegrees = 360f;
-
-    int prevFovDirIndex;
-    int currFovDirIndex;
-
+    int fovDirectionIndex;
     List<Vector3> fovDirections;
 
     void Initialize()
     {
-        prevFovDirIndex = 0;
-        currFovDirIndex = 0;
+        fovDirectionIndex = 0;
+        maxNumOfDegrees = 360f;
         fovDirections = new List<Vector3>();
 
-        float fovDegreeIncrement = maxNumOfDegrees / fovPrecision;
+        // e.g. precision -> 10, degree increment -> 36
+        // e.g. precision -> 12, degree increment -> 30
+        // e.g. precision -> 36, degree increment -> 10
+        fovDegreeIncrement = maxNumOfDegrees / fovPrecision;
+
         for (float degrees = 0; degrees < maxNumOfDegrees; degrees += fovDegreeIncrement)
         {
-            float fovRadian = degrees * Mathf.Deg2Rad;
             Vector3 fovDirection = new Vector3(
-                (float)Mathf.Cos(fovRadian),
+                Mathf.Cos(degrees * Mathf.Deg2Rad),
                 0,
-                (float)Mathf.Sin(fovRadian)
+                Mathf.Sin(degrees * Mathf.Deg2Rad)
             );
             fovDirections.Add(fovDirection);
         }
     }
 
-    void Start()
-    {
-        Initialize();
-    }
-
-    void OnValidate()
-    {
-        Initialize();
-    }
-
-    void Update()
-    {
-        Move();
-
-        CheckAndUpdateDirection();
-
-        DrawDebugLines();
-    }
-
     void Move()
     {
-        transform.position += fovDirections[currFovDirIndex] * speed * Time.deltaTime * 0.75f;
+        fovDirectionIndex = GetFovDirectionIndex();
 
-        Quaternion desiredRotation = Quaternion.LookRotation(fovDirections[currFovDirIndex]);
+        // note: decided to use Vector3.Lerp instead of manually setting the position
+        // transform.position +=
+        //     fovDirections[fovDirectionIndex] * movementSpeed * Time.deltaTime * 0.75f;
 
+        Vector3 targetPosition = transform.position + fovDirections[fovDirectionIndex];
+        transform.position = Vector3.Lerp(
+            transform.position,
+            targetPosition,
+            movementSpeed * Time.deltaTime * 0.25f
+        );
+
+        Quaternion targetRotation = Quaternion.LookRotation(fovDirections[fovDirectionIndex]);
         transform.rotation = Quaternion.Lerp(
             transform.rotation,
-            desiredRotation,
+            targetRotation,
             rotationSpeed * Time.deltaTime
         );
     }
 
-    void CheckAndUpdateDirection()
+    int GetFovDirectionIndex()
     {
         Vector3 startPosition = transform.position;
 
@@ -107,27 +99,47 @@ public class Boid : MonoBehaviour
             }
         }
 
-        if (closestHitIndex < 0 || closestHitDist > 0.5)
+        if (closestHitIndex < 0 || closestHitDist > lookAheadDist / 2f)
         {
-            return;
+            return fovDirectionIndex;
         }
 
         Vector3 fovDirAboutToHit = fovDirections[closestHitIndex];
         Vector3 moveAwayDirection = -1 * fovDirAboutToHit;
         Vector3 bisectVector = Vector3.Lerp(
             moveAwayDirection,
-            fovDirections[currFovDirIndex],
+            fovDirections[fovDirectionIndex],
             0.5f
         );
 
+        int newFovDirectionIndex = fovDirectionIndex;
         for (int i = 0; i < fovDirections.Count; i++)
         {
             Vector3 fovDirection = fovDirections[i];
-            if (Vector3.Angle(fovDirection, bisectVector) < 12.5f)
+            if (Vector3.Angle(fovDirection, bisectVector) < fovDegreeIncrement)
             {
-                currFovDirIndex = i;
+                newFovDirectionIndex = i;
             }
         }
+
+        return newFovDirectionIndex;
+    }
+
+    void Start()
+    {
+        Initialize();
+    }
+
+    void OnValidate()
+    {
+        Initialize();
+    }
+
+    void Update()
+    {
+        Move();
+
+        DrawDebugLines();
     }
 
     void DrawDebugLines()
@@ -146,13 +158,13 @@ public class Boid : MonoBehaviour
                 hittableLayerMask
             );
 
-            bool currFovDir = i == currFovDirIndex;
+            bool isCurrFovDir = i == fovDirectionIndex;
 
             if (raycastHitObstacle)
             {
                 Debug.DrawRay(startPosition, fovDirection * hit.distance, Color.red);
             }
-            else if (currFovDir)
+            else if (isCurrFovDir)
             {
                 Debug.DrawRay(startPosition, fovDirection * lookAheadDist, Color.blue);
             }
