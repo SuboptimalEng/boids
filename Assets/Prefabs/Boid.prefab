@@ -112,8 +112,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 2
   rotationSpeed: 8
-  lookAheadDist: 1
-  fovPrecision: 32
+  lookAheadDist: 2
+  fovPrecision: 64
   hittableLayerMask:
     serializedVersion: 2
     m_Bits: 64

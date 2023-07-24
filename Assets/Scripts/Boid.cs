@@ -13,7 +13,7 @@ public class Boid : MonoBehaviour
     [Range(1, 4)]
     public int lookAheadDist;
 
-    [Range(8, 32)]
+    [Range(8, 64)]
     public int fovPrecision;
     float maxNumOfDegrees;
     float fovDegreeIncrement;
