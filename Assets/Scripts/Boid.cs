@@ -10,20 +10,21 @@ public class Boid : MonoBehaviour
     [Range(1, 5)]
     public int lookAheadDist;
 
-    [Range(1, 40)]
+    [Range(1, 64)]
     public int fovPrecision;
 
     public LayerMask hittableLayerMask;
 
     public static float maxNumOfDegrees = 360f;
 
-    Vector3 moveDirection;
+    int fovDirectionIndex;
     List<Vector3> fovDirections;
 
     void Initialize()
     {
-        moveDirection = Vector3.forward;
+        // moveDirection = Vector3.forward;
         fovDirections = new List<Vector3>();
+        fovDirectionIndex = 0;
 
         float fovDegreeIncrement = maxNumOfDegrees / fovPrecision;
         for (float degrees = 0; degrees < maxNumOfDegrees; degrees += fovDegreeIncrement)
@@ -48,32 +49,18 @@ public class Boid : MonoBehaviour
         Initialize();
     }
 
-    void SetDirection(Vector3 newDirection)
-    {
-        moveDirection = newDirection;
-    }
-
     void Move()
     {
-        transform.position += moveDirection * speed * Time.deltaTime;
+        transform.position += fovDirections[fovDirectionIndex] * speed * Time.deltaTime * 0.1f;
     }
 
-    void Update()
+    void DrawDebugLines()
     {
-        Move();
-
         Vector3 startPosition = transform.position;
-
-        int startAngleCollisionIndex = -1;
-        int endAngleCollisionIndex = -1;
-        int closestAngleCollisionIndex = -1;
-
         for (int i = 0; i < fovDirections.Count; i++)
         {
             Vector3 fovDirection = fovDirections[i];
             Vector3 endPosition = startPosition + fovDirection * lookAheadDist;
-
-            Debug.DrawLine(startPosition, endPosition, Color.green);
 
             RaycastHit hit;
             if (
@@ -88,44 +75,94 @@ public class Boid : MonoBehaviour
             {
                 Debug.DrawRay(startPosition, fovDirection * hit.distance, Color.red);
                 Debug.Log("Did Hit");
-
-                if (startAngleCollisionIndex == -1)
-                {
-                    startAngleCollisionIndex = i;
-                }
-                endAngleCollisionIndex = i;
-
-                float angle = Vector3.Angle(moveDirection, fovDirection);
-                if (angle < 1f)
-                {
-                    closestAngleCollisionIndex = i;
-                }
             }
-
-            if (closestAngleCollisionIndex != -1)
+            else
             {
-                int distFromStart = closestAngleCollisionIndex - startAngleCollisionIndex;
-                int distFromEnd = endAngleCollisionIndex - closestAngleCollisionIndex;
-                Vector3 newDirection;
-                if (distFromEnd > distFromStart)
-                {
-                    int fovDirectionIndex = (startAngleCollisionIndex - 1) % fovDirections.Count;
-                    newDirection = fovDirections[fovDirectionIndex];
-                }
-                else if (distFromEnd < distFromStart)
-                {
-                    int fovDirectionIndex = (endAngleCollisionIndex + 1) % fovDirections.Count;
-                    newDirection = fovDirections[fovDirectionIndex];
-                }
-                else
-                {
-                    int fovDirectionIndex = (endAngleCollisionIndex - 1) % fovDirections.Count;
-                    newDirection = fovDirections[fovDirectionIndex];
-                }
-                SetDirection(newDirection);
+                Debug.DrawLine(startPosition, endPosition, Color.green);
             }
         }
+    }
 
-        Debug.Log(startAngleCollisionIndex + "->" + endAngleCollisionIndex);
+    void CheckAndUpdateDirection()
+    {
+        Vector3 startPosition = transform.position;
+
+        RaycastHit hit;
+        if (
+            Physics.Raycast(
+                startPosition,
+                fovDirections[fovDirectionIndex],
+                out hit,
+                lookAheadDist,
+                hittableLayerMask
+            )
+        )
+        {
+            int leftIndex = fovDirectionIndex;
+            int rightIndex = fovDirectionIndex;
+
+            while (true)
+            {
+                bool leftHit = Physics.Raycast(
+                    startPosition,
+                    fovDirections[leftIndex],
+                    out hit,
+                    lookAheadDist,
+                    hittableLayerMask
+                );
+                bool rightHit = Physics.Raycast(
+                    startPosition,
+                    fovDirections[rightIndex],
+                    out hit,
+                    lookAheadDist,
+                    hittableLayerMask
+                );
+
+                // if both ray casts don't cause hit
+                // choose a random one between them
+                if (!leftHit && !rightHit)
+                {
+                    int rand = Random.Range(0, 2);
+                    if (rand == 0)
+                    {
+                        fovDirectionIndex = leftIndex;
+                    }
+                    else
+                    {
+                        fovDirectionIndex = rightIndex;
+                    }
+                    break;
+                }
+
+                if (!leftHit)
+                {
+                    fovDirectionIndex = leftIndex;
+                    break;
+                }
+                if (!rightHit)
+                {
+                    fovDirectionIndex = rightIndex;
+                    break;
+                }
+
+                leftIndex = (leftIndex + 4) % fovDirections.Count;
+                rightIndex = (rightIndex - 4) % fovDirections.Count;
+
+                // unity modulo returns negative numbers!!!
+                if (rightIndex < 0)
+                {
+                    rightIndex += fovDirections.Count;
+                }
+            }
+        }
+    }
+
+    void Update()
+    {
+        Move();
+
+        CheckAndUpdateDirection();
+
+        DrawDebugLines();
     }
 }
