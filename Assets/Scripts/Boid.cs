@@ -18,18 +18,14 @@ public class Boid : MonoBehaviour
     public static float maxNumOfDegrees = 360f;
 
     Vector3 moveDirection;
+    List<Vector3> fovDirections;
 
-    void Start()
+    void Initialize()
     {
         moveDirection = Vector3.forward;
-    }
-
-    void Update()
-    {
-        Vector3 startPosition = transform.position;
+        fovDirections = new List<Vector3>();
 
         float fovDegreeIncrement = maxNumOfDegrees / fovPrecision;
-
         for (float degrees = 0; degrees < maxNumOfDegrees; degrees += fovDegreeIncrement)
         {
             float fovRadian = degrees * Mathf.Deg2Rad;
@@ -38,7 +34,43 @@ public class Boid : MonoBehaviour
                 0,
                 (float)Mathf.Sin(fovRadian)
             );
+            fovDirections.Add(fovDirection);
+        }
+    }
 
+    void Start()
+    {
+        Initialize();
+    }
+
+    void OnValidate()
+    {
+        Initialize();
+    }
+
+    void SetDirection(Vector3 newDirection)
+    {
+        moveDirection = newDirection;
+    }
+
+    void Move()
+    {
+        transform.position += moveDirection * speed * Time.deltaTime;
+    }
+
+    void Update()
+    {
+        Move();
+
+        Vector3 startPosition = transform.position;
+
+        int startAngleCollisionIndex = -1;
+        int endAngleCollisionIndex = -1;
+        int closestAngleCollisionIndex = -1;
+
+        for (int i = 0; i < fovDirections.Count; i++)
+        {
+            Vector3 fovDirection = fovDirections[i];
             Vector3 endPosition = startPosition + fovDirection * lookAheadDist;
 
             Debug.DrawLine(startPosition, endPosition, Color.green);
@@ -56,7 +88,44 @@ public class Boid : MonoBehaviour
             {
                 Debug.DrawRay(startPosition, fovDirection * hit.distance, Color.red);
                 Debug.Log("Did Hit");
+
+                if (startAngleCollisionIndex == -1)
+                {
+                    startAngleCollisionIndex = i;
+                }
+                endAngleCollisionIndex = i;
+
+                float angle = Vector3.Angle(moveDirection, fovDirection);
+                if (angle < 1f)
+                {
+                    closestAngleCollisionIndex = i;
+                }
+            }
+
+            if (closestAngleCollisionIndex != -1)
+            {
+                int distFromStart = closestAngleCollisionIndex - startAngleCollisionIndex;
+                int distFromEnd = endAngleCollisionIndex - closestAngleCollisionIndex;
+                Vector3 newDirection;
+                if (distFromEnd > distFromStart)
+                {
+                    int fovDirectionIndex = (startAngleCollisionIndex - 1) % fovDirections.Count;
+                    newDirection = fovDirections[fovDirectionIndex];
+                }
+                else if (distFromEnd < distFromStart)
+                {
+                    int fovDirectionIndex = (endAngleCollisionIndex + 1) % fovDirections.Count;
+                    newDirection = fovDirections[fovDirectionIndex];
+                }
+                else
+                {
+                    int fovDirectionIndex = (endAngleCollisionIndex - 1) % fovDirections.Count;
+                    newDirection = fovDirections[fovDirectionIndex];
+                }
+                SetDirection(newDirection);
             }
         }
+
+        Debug.Log(startAngleCollisionIndex + "->" + endAngleCollisionIndex);
     }
 }
