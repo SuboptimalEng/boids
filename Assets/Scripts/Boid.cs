@@ -22,9 +22,8 @@ public class Boid : MonoBehaviour
 
     void Initialize()
     {
-        // moveDirection = Vector3.forward;
-        fovDirections = new List<Vector3>();
         fovDirectionIndex = 0;
+        fovDirections = new List<Vector3>();
 
         float fovDegreeIncrement = maxNumOfDegrees / fovPrecision;
         for (float degrees = 0; degrees < maxNumOfDegrees; degrees += fovDegreeIncrement)
@@ -49,9 +48,12 @@ public class Boid : MonoBehaviour
         Initialize();
     }
 
+    void SetDirection() { }
+
     void Move()
     {
         transform.position += fovDirections[fovDirectionIndex] * speed * Time.deltaTime * 0.75f;
+        transform.LookAt(transform.position + fovDirections[fovDirectionIndex] * speed);
     }
 
     void DrawDebugLines()
@@ -121,11 +123,16 @@ public class Boid : MonoBehaviour
 
         Vector3 fovDirAboutToHit = fovDirections[closestHitIndex];
         Vector3 moveAwayDirection = -1 * fovDirAboutToHit;
+        Vector3 bisectVector = Vector3.Lerp(
+            moveAwayDirection,
+            fovDirections[fovDirectionIndex],
+            0.5f
+        );
 
         for (int i = 0; i < fovDirections.Count; i++)
         {
             Vector3 fovDirection = fovDirections[i];
-            if (Vector3.Angle(fovDirection, moveAwayDirection) < 45f)
+            if (Vector3.Angle(fovDirection, bisectVector) < 22.5f)
             {
                 fovDirectionIndex = i;
             }
