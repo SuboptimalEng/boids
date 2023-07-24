@@ -57,7 +57,7 @@ public class Boid : MonoBehaviour
         transform.position = Vector3.Lerp(
             transform.position,
             targetPosition,
-            movementSpeed * Time.deltaTime * 0.25f
+            movementSpeed * Time.deltaTime
         );
 
         Quaternion targetRotation = Quaternion.LookRotation(fovDirections[fovDirectionIndex]);

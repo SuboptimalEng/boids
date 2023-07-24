@@ -110,10 +110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 859b42c7ce6344a64b2678b8820167cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  movementSpeed: 2
+  rotationSpeed: 8
   lookAheadDist: 1
   fovPrecision: 32
-  rotationSpeed: 8
   hittableLayerMask:
     serializedVersion: 2
     m_Bits: 64
