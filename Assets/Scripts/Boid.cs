@@ -13,16 +13,22 @@ public class Boid : MonoBehaviour
     [Range(1, 32)]
     public int fovPrecision;
 
+    [Range(1, 8)]
+    public int rotationSpeed;
+
     public LayerMask hittableLayerMask;
 
     public static float maxNumOfDegrees = 360f;
 
-    int fovDirectionIndex;
+    int prevFovDirIndex;
+    int currFovDirIndex;
+
     List<Vector3> fovDirections;
 
     void Initialize()
     {
-        fovDirectionIndex = 0;
+        prevFovDirIndex = 0;
+        currFovDirIndex = 0;
         fovDirections = new List<Vector3>();
 
         float fovDegreeIncrement = maxNumOfDegrees / fovPrecision;
@@ -48,41 +54,26 @@ public class Boid : MonoBehaviour
         Initialize();
     }
 
-    void SetDirection() { }
+    void Update()
+    {
+        Move();
+
+        CheckAndUpdateDirection();
+
+        DrawDebugLines();
+    }
 
     void Move()
     {
-        transform.position += fovDirections[fovDirectionIndex] * speed * Time.deltaTime * 0.75f;
-        transform.LookAt(transform.position + fovDirections[fovDirectionIndex] * speed);
-    }
+        transform.position += fovDirections[currFovDirIndex] * speed * Time.deltaTime * 0.75f;
 
-    void DrawDebugLines()
-    {
-        Vector3 startPosition = transform.position;
-        for (int i = 0; i < fovDirections.Count; i++)
-        {
-            Vector3 fovDirection = fovDirections[i];
-            Vector3 endPosition = startPosition + fovDirection * lookAheadDist;
+        Quaternion desiredRotation = Quaternion.LookRotation(fovDirections[currFovDirIndex]);
 
-            RaycastHit hit;
-            if (
-                Physics.Raycast(
-                    startPosition,
-                    fovDirection,
-                    out hit,
-                    lookAheadDist,
-                    hittableLayerMask
-                )
-            )
-            {
-                Debug.DrawRay(startPosition, fovDirection * hit.distance, Color.red);
-                Debug.Log("Did Hit");
-            }
-            else
-            {
-                Debug.DrawLine(startPosition, endPosition, Color.green);
-            }
-        }
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            desiredRotation,
+            rotationSpeed * Time.deltaTime
+        );
     }
 
     void CheckAndUpdateDirection()
@@ -125,80 +116,50 @@ public class Boid : MonoBehaviour
         Vector3 moveAwayDirection = -1 * fovDirAboutToHit;
         Vector3 bisectVector = Vector3.Lerp(
             moveAwayDirection,
-            fovDirections[fovDirectionIndex],
+            fovDirections[currFovDirIndex],
             0.5f
         );
 
         for (int i = 0; i < fovDirections.Count; i++)
         {
             Vector3 fovDirection = fovDirections[i];
-            if (Vector3.Angle(fovDirection, bisectVector) < 22.5f)
+            if (Vector3.Angle(fovDirection, bisectVector) < 12.5f)
             {
-                fovDirectionIndex = i;
+                currFovDirIndex = i;
             }
         }
-
-        // note: slowly adjust directions
-        // int leftIndex = closestHitIndex;
-        // int rightIndex = closestHitIndex;
-        // while (true)
-        // {
-        //     RaycastHit hit;
-        //     bool leftHit = Physics.Raycast(
-        //         startPosition,
-        //         fovDirections[leftIndex],
-        //         out hit,
-        //         lookAheadDist,
-        //         hittableLayerMask
-        //     );
-        //     bool rightHit = Physics.Raycast(
-        //         startPosition,
-        //         fovDirections[rightIndex],
-        //         out hit,
-        //         lookAheadDist,
-        //         hittableLayerMask
-        //     );
-        //     // if both ray casts don't cause hit
-        //     // choose a random one between them
-        //     // if (!leftHit && !rightHit)
-        //     // {
-        //     //     int rand = Random.Range(0, 2);
-        //     //     if (rand == 0)
-        //     //     {
-        //     //         fovDirectionIndex = leftIndex;
-        //     //     }
-        //     //     else
-        //     //     {
-        //     //         fovDirectionIndex = rightIndex;
-        //     //     }
-        //     //     break;
-        //     // }
-        //     if (!leftHit)
-        //     {
-        //         fovDirectionIndex = leftIndex;
-        //         break;
-        //     }
-        //     if (!rightHit)
-        //     {
-        //         fovDirectionIndex = rightIndex;
-        //         break;
-        //     }
-        //     int strength = Mathf.RoundToInt(fovDirections.Count / (1 / hit.distance));
-        //     leftIndex = (leftIndex + strength) % fovDirections.Count;
-        //     rightIndex = (rightIndex - strength) % fovDirections.Count;
-        //     if (rightIndex < 0)
-        //     {
-        //         rightIndex += fovDirections.Count;
-        //     }
-        // }
     }
 
-    void Update()
+    void DrawDebugLines()
     {
-        Move();
+        Vector3 startPosition = transform.position;
+        for (int i = 0; i < fovDirections.Count; i++)
+        {
+            Vector3 fovDirection = fovDirections[i];
 
-        CheckAndUpdateDirection();
+            RaycastHit hit;
+            bool raycastHitObstacle = Physics.Raycast(
+                startPosition,
+                fovDirection,
+                out hit,
+                lookAheadDist,
+                hittableLayerMask
+            );
 
-        DrawDebugLines();
+            bool currFovDir = i == currFovDirIndex;
+
+            if (raycastHitObstacle)
+            {
+                Debug.DrawRay(startPosition, fovDirection * hit.distance, Color.red);
+            }
+            else if (currFovDir)
+            {
+                Debug.DrawRay(startPosition, fovDirection * lookAheadDist, Color.blue);
+            }
+            else
+            {
+                Debug.DrawRay(startPosition, fovDirection * lookAheadDist, Color.green);
+            }
+        }
     }
 }
