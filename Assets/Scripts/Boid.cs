@@ -15,16 +15,18 @@ public class Boid : MonoBehaviour
 
     [Range(8, 32)]
     public int fovPrecision;
+    float maxNumOfDegrees;
     float fovDegreeIncrement;
-    float maxNumOfDegrees = 360f;
 
     public LayerMask hittableLayerMask;
 
+    bool enableDebugLines;
     int fovDirectionIndex;
     List<Vector3> fovDirections;
 
     void Initialize()
     {
+        enableDebugLines = true;
         fovDirectionIndex = 0;
         maxNumOfDegrees = 360f;
         fovDirections = new List<Vector3>();
@@ -142,8 +144,19 @@ public class Boid : MonoBehaviour
         DrawDebugLines();
     }
 
+    public void ToggleDebugLines()
+    {
+        enableDebugLines = !enableDebugLines;
+    }
+
     void DrawDebugLines()
     {
+        // todo: draw debug lines only when user clicks on a boid
+        if (!enableDebugLines)
+        {
+            return;
+        }
+
         Vector3 startPosition = transform.position;
         for (int i = 0; i < fovDirections.Count; i++)
         {
