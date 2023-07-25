@@ -5,6 +5,8 @@ Simulating boids.
 ## References
 
 - [Boids by Craig Reynolds](https://www.red3d.com/cwr/boids/)
+- [V. Hunter Adams' Boids Algorithm](https://vanhunteradams.com/Pico/Animal_Movement/Boids-algorithm.html)
+- [Sebastian Lague's Boids Coding Adventure](https://www.youtube.com/watch?v=bqtqltqcQhw)
 
 ## License
 
