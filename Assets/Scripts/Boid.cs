@@ -44,15 +44,18 @@ public class Boid : MonoBehaviour
 
     public void UpdateBoid(List<Boid> boids)
     {
-        AvoidOtherBoids(boids);
+        Vector3 avoidOtherBoidsVelocity = AvoidOtherBoids(boids);
+
+        velocity += avoidOtherBoidsVelocity;
 
         AvoidMapBoundary();
         ClampVelocityBetweenMinMax();
         UpdatePosition();
     }
 
-    public void AvoidOtherBoids(List<Boid> boids)
+    public Vector3 AvoidOtherBoids(List<Boid> boids)
     {
+        Vector3 avoidOtherBoidsVelocity = Vector3.zero;
         Vector3 moveAwayDelta = Vector3.zero;
         Vector3 currentBoidPosition = transform.position;
 
@@ -79,30 +82,35 @@ public class Boid : MonoBehaviour
             }
         }
 
-        velocity += moveAwayDelta * boidSettings.avoidFactor;
+        // velocity += moveAwayDelta * boidSettings.avoidFactor;
+        avoidOtherBoidsVelocity = moveAwayDelta * boidSettings.avoidFactor;
+        return avoidOtherBoidsVelocity;
     }
 
     void AvoidMapBoundary()
     {
-        Vector3 currentBoidPosition = transform.position;
+        Vector3 position = transform.position;
 
         // outside top
-        if (currentBoidPosition.z > boidSettings.mapSize)
+        if (position.z > boidSettings.mapSize)
         {
             velocity.z = velocity.z - boidSettings.turnFactor;
         }
+
         // outside right
-        if (currentBoidPosition.x > boidSettings.mapSize)
+        if (position.x > boidSettings.mapSize)
         {
             velocity.x = velocity.x - boidSettings.turnFactor;
         }
+
         // outside left
-        if (currentBoidPosition.x < -boidSettings.mapSize)
+        if (position.x < -boidSettings.mapSize)
         {
             velocity.x = velocity.x + boidSettings.turnFactor;
         }
+
         // outside bottom
-        if (currentBoidPosition.z < -boidSettings.mapSize)
+        if (position.z < -boidSettings.mapSize)
         {
             velocity.z = velocity.z + boidSettings.turnFactor;
         }
@@ -110,15 +118,10 @@ public class Boid : MonoBehaviour
 
     void ClampVelocityBetweenMinMax()
     {
-        float speed = Mathf.Sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
-        if (speed < boidSettings.minSpeed)
-        {
-            velocity = (velocity / speed) * boidSettings.minSpeed;
-        }
-        if (speed > boidSettings.maxSpeed)
-        {
-            velocity = (velocity / speed) * boidSettings.maxSpeed;
-        }
+        Vector3 direction = velocity.normalized;
+        float speed = velocity.magnitude;
+        speed = Mathf.Clamp(speed, boidSettings.minSpeed, boidSettings.maxSpeed);
+        velocity = direction * speed;
     }
 
     void UpdatePosition()
