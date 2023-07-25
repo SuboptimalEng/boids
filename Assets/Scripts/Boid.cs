@@ -8,7 +8,7 @@ public struct BoidSettings
     public int visualRange;
     public int rotationSpeed;
 
-    public float scale;
+    public float boidScale;
     public float minSpeed;
     public float maxSpeed;
     public float turnFactor;
@@ -26,11 +26,10 @@ public class Boid : MonoBehaviour
     public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
     {
         this.boidSettings = boidSettings;
+        this.forward = rotation * Vector3.forward;
+        this.velocity = this.boidSettings.maxSpeed * forward;
 
-        forward = rotation * Vector3.forward;
-        velocity = this.boidSettings.maxSpeed * forward;
-
-        transform.localScale *= this.boidSettings.scale;
+        transform.localScale *= this.boidSettings.boidScale;
     }
 
     void Update()
@@ -43,11 +42,18 @@ public class Boid : MonoBehaviour
         );
     }
 
-    public void avoidOtherBoids(List<Boid> boids)
+    public void UpdateBoid(List<Boid> boids)
     {
-        // float closeDx = 0;
-        // float closeDz = 0;
-        Vector3 closeDelta = Vector3.zero;
+        AvoidOtherBoids(boids);
+
+        AvoidMapBoundary();
+        ClampVelocityBetweenMinMax();
+        UpdatePosition();
+    }
+
+    public void AvoidOtherBoids(List<Boid> boids)
+    {
+        Vector3 moveAwayDelta = Vector3.zero;
         Vector3 currentBoidPosition = transform.position;
 
         foreach (Boid otherBoid in boids)
@@ -59,30 +65,26 @@ public class Boid : MonoBehaviour
 
             Vector3 otherBoidPosition = otherBoid.transform.position;
 
-            Vector3 delta = currentBoidPosition - otherBoidPosition;
-            // float dx = currentBoidPosition.x - otherBoidPosition.x;
-            // float dz = currentBoidPosition.z - otherBoidPosition.z;
-
+            Vector3 distToOtherBoid = otherBoidPosition - currentBoidPosition;
             if (
-                Mathf.Abs(delta.x) < boidSettings.visualRange
-                && Mathf.Abs(delta.x) < boidSettings.visualRange
+                Mathf.Abs(distToOtherBoid.x) < boidSettings.visualRange
+                && Mathf.Abs(distToOtherBoid.y) < boidSettings.visualRange
             )
             {
-                float squareDist = delta.sqrMagnitude;
-                // float squareDist = Mathf.Sqrt(delta.x * delta.x + delta.z * delta.z);
+                float squareDist = distToOtherBoid.sqrMagnitude;
                 if (squareDist < boidSettings.protectedRange)
                 {
-                    // closeDx += currentBoidPosition.x - otherBoidPosition.x;
-                    // closeDz += currentBoidPosition.z - otherBoidPosition.z;
-                    closeDelta += currentBoidPosition - otherBoidPosition;
+                    moveAwayDelta += currentBoidPosition - otherBoidPosition;
                 }
             }
         }
 
-        // velocity.x += closeDx * avoidFactor;
-        // velocity.z += closeDz * avoidFactor;
+        velocity += moveAwayDelta * boidSettings.avoidFactor;
+    }
 
-        velocity += closeDelta * boidSettings.avoidFactor;
+    void AvoidMapBoundary()
+    {
+        Vector3 currentBoidPosition = transform.position;
 
         // outside top
         if (currentBoidPosition.z > boidSettings.mapSize)
@@ -104,9 +106,11 @@ public class Boid : MonoBehaviour
         {
             velocity.z = velocity.z + boidSettings.turnFactor;
         }
+    }
 
+    void ClampVelocityBetweenMinMax()
+    {
         float speed = Mathf.Sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
-        // float speed = velocity.sqrMagnitude;
         if (speed < boidSettings.minSpeed)
         {
             velocity = (velocity / speed) * boidSettings.minSpeed;
@@ -115,7 +119,10 @@ public class Boid : MonoBehaviour
         {
             velocity = (velocity / speed) * boidSettings.maxSpeed;
         }
+    }
 
+    void UpdatePosition()
+    {
         transform.position = transform.position + velocity * Time.deltaTime;
     }
 }

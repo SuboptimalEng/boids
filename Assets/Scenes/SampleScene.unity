@@ -475,11 +475,12 @@ MonoBehaviour:
   boids: []
   visualRange: 4
   turnFactor: 0.5
-  avoidFactor: 0.05
+  avoidFactor: 0.075
   protectedRange: 2
   rotationSpeed: 8
   minSpeed: 2
   maxSpeed: 2.5
+  scale: 0.5
 --- !u!4 &379658365
 Transform:
   m_ObjectHideFlags: 0

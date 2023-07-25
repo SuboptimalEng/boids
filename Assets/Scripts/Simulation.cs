@@ -14,6 +14,9 @@ public class Simulation : MonoBehaviour
     [Range(1, 5)]
     public int mapSize;
 
+    [Range(0, 1)]
+    public float boidScale;
+
     public GameObject boidPrefab;
     public List<Boid> boids;
 
@@ -40,18 +43,14 @@ public class Simulation : MonoBehaviour
     [Range(2, 3)]
     public float maxSpeed;
 
-    [Header("Boid Misc Settings")]
-    [Range(0, 1)]
-    public float scale;
-
-    BoidSettings createBoidSettings()
+    BoidSettings CreateBoidSettings()
     {
         BoidSettings boidSettings = new BoidSettings
         {
-            scale = scale,
             mapSize = mapSize,
             visualRange = visualRange,
             rotationSpeed = rotationSpeed,
+            boidScale = boidScale,
             minSpeed = minSpeed,
             maxSpeed = maxSpeed,
             turnFactor = turnFactor,
@@ -61,7 +60,7 @@ public class Simulation : MonoBehaviour
         return boidSettings;
     }
 
-    void createBoids()
+    void CreateBoids()
     {
         for (int i = 0; i < numberOfObjects; i++)
         {
@@ -76,7 +75,7 @@ public class Simulation : MonoBehaviour
             GameObject gameObject = Instantiate(boidPrefab, position, rotation);
 
             Boid b = gameObject.GetComponent<Boid>();
-            BoidSettings boidSettings = createBoidSettings();
+            BoidSettings boidSettings = CreateBoidSettings();
             b.Initialize(position, rotation, boidSettings);
 
             boids.Add(gameObject.GetComponent<Boid>());
@@ -85,14 +84,14 @@ public class Simulation : MonoBehaviour
 
     void Start()
     {
-        createBoids();
+        CreateBoids();
     }
 
     void Update()
     {
         foreach (Boid b in boids)
         {
-            b.avoidOtherBoids(boids);
+            b.UpdateBoid(boids);
         }
     }
 }
