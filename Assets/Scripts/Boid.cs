@@ -23,6 +23,8 @@ public class Boid : MonoBehaviour
     public Vector3 forward;
     public Vector3 velocity;
 
+    bool isOutOfBounds = false;
+
     public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
     {
         this.boidSettings = boidSettings;
@@ -49,7 +51,7 @@ public class Boid : MonoBehaviour
         velocity += avoidOtherBoidsVelocity;
 
         AvoidMapBoundary();
-        ClampVelocityBetweenMinMax();
+        ClampBoidSpeed();
         UpdatePosition();
     }
 
@@ -89,35 +91,49 @@ public class Boid : MonoBehaviour
 
     void AvoidMapBoundary()
     {
+        isOutOfBounds = false;
         Vector3 position = transform.position;
 
         // outside top
         if (position.z > boidSettings.mapSize)
         {
-            velocity.z = velocity.z - boidSettings.turnFactor;
+            velocity.z -= boidSettings.turnFactor;
+            isOutOfBounds = true;
         }
 
         // outside right
         if (position.x > boidSettings.mapSize)
         {
-            velocity.x = velocity.x - boidSettings.turnFactor;
+            velocity.x -= boidSettings.turnFactor;
+            isOutOfBounds = true;
         }
 
         // outside left
         if (position.x < -boidSettings.mapSize)
         {
-            velocity.x = velocity.x + boidSettings.turnFactor;
+            velocity.x += boidSettings.turnFactor;
+            isOutOfBounds = true;
         }
 
         // outside bottom
         if (position.z < -boidSettings.mapSize)
         {
-            velocity.z = velocity.z + boidSettings.turnFactor;
+            velocity.z += boidSettings.turnFactor;
+            isOutOfBounds = true;
         }
     }
 
-    void ClampVelocityBetweenMinMax()
+    void ClampBoidSpeed()
     {
+        // Note: Do not clamp the speed of the boid if it is out of
+        // bounds. This ensures that the boid smoothly returns back
+        // onto the map.
+        if (isOutOfBounds)
+        {
+            return;
+        }
+
+        Vector3 position = transform.position;
         Vector3 direction = velocity.normalized;
         float speed = velocity.magnitude;
         speed = Mathf.Clamp(speed, boidSettings.minSpeed, boidSettings.maxSpeed);

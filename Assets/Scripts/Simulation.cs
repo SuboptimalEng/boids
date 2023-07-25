@@ -24,10 +24,10 @@ public class Simulation : MonoBehaviour
     [Range(1, 4)]
     public int visualRange;
 
-    [Range(0.5f, 1.5f)]
+    [Range(0, 0.1f)]
     public float turnFactor;
 
-    [Range(0, 1)]
+    [Range(0, 0.1f)]
     public float avoidFactor;
 
     [Range(0, 2)]
