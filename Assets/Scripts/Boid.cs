@@ -4,37 +4,22 @@ using UnityEngine;
 
 public class Boid : MonoBehaviour
 {
-    float maxX = 4;
-    float maxZ = 4;
-    float minX = -4;
-    float minZ = -4;
+    float mapSize;
 
-    [SerializeField]
     float minSpeed = 0.5f;
-
-    [SerializeField]
     float maxSpeed = 2f;
-
-    [SerializeField]
     float visualRange = 2;
-
-    [SerializeField]
     float turnFactor = 1.5f;
-
-    [SerializeField]
     float avoidFactor = 0.1f;
-
-    [SerializeField]
     float protectedRange = 1.5f;
-
-    [SerializeField]
     float rotationSpeed = 8;
 
     Vector3 forward;
     Vector3 velocity;
 
-    public void Initialize(Vector3 position, Quaternion rotation)
+    public void Initialize(Vector3 position, Quaternion rotation, int mapSize)
     {
+        this.mapSize = mapSize;
         forward = rotation * Vector3.forward;
         velocity = maxSpeed * forward;
     }
@@ -88,22 +73,22 @@ public class Boid : MonoBehaviour
         velocity += closeDelta * avoidFactor;
 
         // outside top
-        if (currentBoidPosition.z > maxZ)
+        if (currentBoidPosition.z > mapSize)
         {
             velocity.z = velocity.z - turnFactor;
         }
         // outside right
-        if (currentBoidPosition.x > maxX)
+        if (currentBoidPosition.x > mapSize)
         {
             velocity.x = velocity.x - turnFactor;
         }
         // outside left
-        if (currentBoidPosition.x < minX)
+        if (currentBoidPosition.x < -mapSize)
         {
             velocity.x = velocity.x + turnFactor;
         }
         // outside bottom
-        if (currentBoidPosition.z < minZ)
+        if (currentBoidPosition.z < -mapSize)
         {
             velocity.z = velocity.z + turnFactor;
         }

@@ -10,6 +10,9 @@ public class Simulation : MonoBehaviour
     [Range(1, 12)]
     public int numberOfObjects;
 
+    [Range(1, 5)]
+    public int mapSize;
+
     public GameObject boidPrefab;
     public List<Boid> boids;
 
@@ -30,7 +33,7 @@ public class Simulation : MonoBehaviour
             gameObject.transform.rotation = rotation;
 
             Boid b = gameObject.GetComponent<Boid>();
-            b.Initialize(position, rotation);
+            b.Initialize(position, rotation, mapSize);
 
             boids.Add(gameObject.GetComponent<Boid>());
         }
