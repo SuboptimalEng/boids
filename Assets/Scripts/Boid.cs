@@ -4,37 +4,56 @@ using UnityEngine;
 
 public class Boid : MonoBehaviour
 {
-    float maxX = 6;
-    float maxZ = 6;
-    float minX = -6;
-    float minZ = -6;
-    float minSpeed = 1f;
-    float maxSpeed = 2.5f;
+    float maxX = 4;
+    float maxZ = 4;
+    float minX = -4;
+    float minZ = -4;
 
+    [SerializeField]
+    float minSpeed = 0.5f;
+
+    [SerializeField]
+    float maxSpeed = 2f;
+
+    [SerializeField]
     float visualRange = 2;
+
+    [SerializeField]
     float turnFactor = 1.5f;
+
+    [SerializeField]
     float avoidFactor = 0.1f;
+
+    [SerializeField]
     float protectedRange = 1.5f;
-    Vector3 velocity = Vector3.forward;
 
-    Rigidbody rb;
+    [SerializeField]
+    float rotationSpeed = 8;
 
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-        rb.velocity = Vector3.forward;
-    }
+    Vector3 forward;
+    Vector3 velocity;
 
     public void Initialize(Vector3 position, Quaternion rotation)
     {
-        Vector3 forwardDirection = rotation * Vector3.forward;
-        rb.velocity = forwardDirection * maxSpeed;
+        forward = rotation * Vector3.forward;
+        velocity = maxSpeed * forward;
+    }
+
+    void Update()
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(velocity);
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * Time.deltaTime
+        );
     }
 
     public void avoidOtherBoids(List<Boid> boids)
     {
-        float closeDx = 0;
-        float closeDz = 0;
+        // float closeDx = 0;
+        // float closeDz = 0;
+        Vector3 closeDelta = Vector3.zero;
         Vector3 currentBoidPosition = transform.position;
 
         foreach (Boid otherBoid in boids)
@@ -46,26 +65,27 @@ public class Boid : MonoBehaviour
 
             Vector3 otherBoidPosition = otherBoid.transform.position;
 
-            float dx = currentBoidPosition.x - otherBoidPosition.x;
-            float dz = currentBoidPosition.z - otherBoidPosition.z;
+            Vector3 delta = currentBoidPosition - otherBoidPosition;
+            // float dx = currentBoidPosition.x - otherBoidPosition.x;
+            // float dz = currentBoidPosition.z - otherBoidPosition.z;
 
-            if (Mathf.Abs(dx) < visualRange && Mathf.Abs(dz) < visualRange)
+            if (Mathf.Abs(delta.x) < visualRange && Mathf.Abs(delta.x) < visualRange)
             {
-                float squareDist = dx * dx + dz * dz;
-
+                float squareDist = delta.sqrMagnitude;
+                // float squareDist = Mathf.Sqrt(delta.x * delta.x + delta.z * delta.z);
                 if (squareDist < protectedRange)
                 {
-                    closeDx += currentBoidPosition.x - otherBoidPosition.x;
-                    closeDz += currentBoidPosition.z - otherBoidPosition.z;
+                    // closeDx += currentBoidPosition.x - otherBoidPosition.x;
+                    // closeDz += currentBoidPosition.z - otherBoidPosition.z;
+                    closeDelta += currentBoidPosition - otherBoidPosition;
                 }
             }
         }
 
-        // rb.velocity = Vector3.forward;
-        velocity.x += closeDx * avoidFactor;
-        velocity.z += closeDz * avoidFactor;
+        // velocity.x += closeDx * avoidFactor;
+        // velocity.z += closeDz * avoidFactor;
 
-        Rigidbody rb = transform.GetComponent<Rigidbody>();
+        velocity += closeDelta * avoidFactor;
 
         // outside top
         if (currentBoidPosition.z > maxZ)
@@ -89,6 +109,7 @@ public class Boid : MonoBehaviour
         }
 
         float speed = Mathf.Sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
+        // float speed = velocity.sqrMagnitude;
         if (speed < minSpeed)
         {
             velocity = (velocity / speed) * minSpeed;
