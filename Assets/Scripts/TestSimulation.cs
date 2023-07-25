@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimulationTest : MonoBehaviour
+public class TestSimulation : MonoBehaviour
 {
     public GameObject boidPrefab;
 

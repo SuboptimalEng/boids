@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoidTest : MonoBehaviour
+public class TestBoid : MonoBehaviour
 {
     [Range(1, 4)]
     public int movementSpeed;
