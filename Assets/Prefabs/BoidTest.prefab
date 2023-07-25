@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2005513173868026144}
   - component: {fileID: 2005513173868026145}
   m_Layer: 6
-  m_Name: Boid
+  m_Name: BoidTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2005513173868026146}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 859b42c7ce6344a64b2678b8820167cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f90429ba78ca434fb7a7d0e02ee5963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 2
