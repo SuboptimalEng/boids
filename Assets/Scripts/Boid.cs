@@ -2,26 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct BoidSettings
+{
+    public int mapSize;
+    public int visualRange;
+    public int rotationSpeed;
+
+    public float scale;
+    public float minSpeed;
+    public float maxSpeed;
+    public float turnFactor;
+    public float avoidFactor;
+    public float protectedRange;
+}
+
 public class Boid : MonoBehaviour
 {
-    float mapSize;
+    BoidSettings boidSettings;
 
-    float minSpeed = 0.5f;
-    float maxSpeed = 2f;
-    float visualRange = 2;
-    float turnFactor = 1.5f;
-    float avoidFactor = 0.1f;
-    float protectedRange = 1.5f;
-    float rotationSpeed = 8;
+    public Vector3 forward;
+    public Vector3 velocity;
 
-    Vector3 forward;
-    Vector3 velocity;
-
-    public void Initialize(Vector3 position, Quaternion rotation, int mapSize)
+    public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
     {
-        this.mapSize = mapSize;
+        this.boidSettings = boidSettings;
+
         forward = rotation * Vector3.forward;
-        velocity = maxSpeed * forward;
+        velocity = this.boidSettings.maxSpeed * forward;
+
+        transform.localScale *= this.boidSettings.scale;
     }
 
     void Update()
@@ -30,7 +39,7 @@ public class Boid : MonoBehaviour
         transform.rotation = Quaternion.Lerp(
             transform.rotation,
             targetRotation,
-            rotationSpeed * Time.deltaTime
+            boidSettings.rotationSpeed * Time.deltaTime
         );
     }
 
@@ -54,11 +63,14 @@ public class Boid : MonoBehaviour
             // float dx = currentBoidPosition.x - otherBoidPosition.x;
             // float dz = currentBoidPosition.z - otherBoidPosition.z;
 
-            if (Mathf.Abs(delta.x) < visualRange && Mathf.Abs(delta.x) < visualRange)
+            if (
+                Mathf.Abs(delta.x) < boidSettings.visualRange
+                && Mathf.Abs(delta.x) < boidSettings.visualRange
+            )
             {
                 float squareDist = delta.sqrMagnitude;
                 // float squareDist = Mathf.Sqrt(delta.x * delta.x + delta.z * delta.z);
-                if (squareDist < protectedRange)
+                if (squareDist < boidSettings.protectedRange)
                 {
                     // closeDx += currentBoidPosition.x - otherBoidPosition.x;
                     // closeDz += currentBoidPosition.z - otherBoidPosition.z;
@@ -70,38 +82,38 @@ public class Boid : MonoBehaviour
         // velocity.x += closeDx * avoidFactor;
         // velocity.z += closeDz * avoidFactor;
 
-        velocity += closeDelta * avoidFactor;
+        velocity += closeDelta * boidSettings.avoidFactor;
 
         // outside top
-        if (currentBoidPosition.z > mapSize)
+        if (currentBoidPosition.z > boidSettings.mapSize)
         {
-            velocity.z = velocity.z - turnFactor;
+            velocity.z = velocity.z - boidSettings.turnFactor;
         }
         // outside right
-        if (currentBoidPosition.x > mapSize)
+        if (currentBoidPosition.x > boidSettings.mapSize)
         {
-            velocity.x = velocity.x - turnFactor;
+            velocity.x = velocity.x - boidSettings.turnFactor;
         }
         // outside left
-        if (currentBoidPosition.x < -mapSize)
+        if (currentBoidPosition.x < -boidSettings.mapSize)
         {
-            velocity.x = velocity.x + turnFactor;
+            velocity.x = velocity.x + boidSettings.turnFactor;
         }
         // outside bottom
-        if (currentBoidPosition.z < -mapSize)
+        if (currentBoidPosition.z < -boidSettings.mapSize)
         {
-            velocity.z = velocity.z + turnFactor;
+            velocity.z = velocity.z + boidSettings.turnFactor;
         }
 
         float speed = Mathf.Sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
         // float speed = velocity.sqrMagnitude;
-        if (speed < minSpeed)
+        if (speed < boidSettings.minSpeed)
         {
-            velocity = (velocity / speed) * minSpeed;
+            velocity = (velocity / speed) * boidSettings.minSpeed;
         }
-        if (speed > maxSpeed)
+        if (speed > boidSettings.maxSpeed)
         {
-            velocity = (velocity / speed) * maxSpeed;
+            velocity = (velocity / speed) * boidSettings.maxSpeed;
         }
 
         transform.position = transform.position + velocity * Time.deltaTime;

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Simulation : MonoBehaviour
 {
+    [Header("Simulation Settings")]
     [Range(1, 4)]
-    public int radius = 1;
+    public int radius;
 
     [Range(1, 12)]
     public int numberOfObjects;
@@ -16,11 +17,54 @@ public class Simulation : MonoBehaviour
     public GameObject boidPrefab;
     public List<Boid> boids;
 
-    void Start()
+    [Header("Boid Behavior Settings")]
+    [Range(1, 4)]
+    public int visualRange;
+
+    [Range(0.5f, 1.5f)]
+    public float turnFactor;
+
+    [Range(0, 1)]
+    public float avoidFactor;
+
+    [Range(0, 2)]
+    public float protectedRange;
+
+    [Header("Boid Speed Settings")]
+    [Range(6, 10)]
+    public int rotationSpeed;
+
+    [Range(0, 2)]
+    public float minSpeed;
+
+    [Range(2, 3)]
+    public float maxSpeed;
+
+    [Header("Boid Misc Settings")]
+    [Range(0, 1)]
+    public float scale;
+
+    BoidSettings createBoidSettings()
+    {
+        BoidSettings boidSettings = new BoidSettings
+        {
+            scale = scale,
+            mapSize = mapSize,
+            visualRange = visualRange,
+            rotationSpeed = rotationSpeed,
+            minSpeed = minSpeed,
+            maxSpeed = maxSpeed,
+            turnFactor = turnFactor,
+            avoidFactor = avoidFactor,
+            protectedRange = protectedRange,
+        };
+        return boidSettings;
+    }
+
+    void createBoids()
     {
         for (int i = 0; i < numberOfObjects; i++)
         {
-            GameObject gameObject = Instantiate(boidPrefab, Vector3.zero, Quaternion.identity);
             float angle = i * Mathf.PI * 2 / numberOfObjects;
             float x = Mathf.Cos(angle) * radius;
             float z = Mathf.Sin(angle) * radius;
@@ -29,14 +73,19 @@ public class Simulation : MonoBehaviour
             float angleDegrees = -angle * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.Euler(0, angleDegrees, 0);
 
-            gameObject.transform.position = position;
-            gameObject.transform.rotation = rotation;
+            GameObject gameObject = Instantiate(boidPrefab, position, rotation);
 
             Boid b = gameObject.GetComponent<Boid>();
-            b.Initialize(position, rotation, mapSize);
+            BoidSettings boidSettings = createBoidSettings();
+            b.Initialize(position, rotation, boidSettings);
 
             boids.Add(gameObject.GetComponent<Boid>());
         }
+    }
+
+    void Start()
+    {
+        createBoids();
     }
 
     void Update()
