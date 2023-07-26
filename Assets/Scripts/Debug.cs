@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Reference by David Zulic
+// reference by david zulic
 // https://medium.com/@davidzulic/unity-drawing-custom-debug-shapes-part-1-4941d3fda905
 public class Debug : UnityEngine.Debug
 {

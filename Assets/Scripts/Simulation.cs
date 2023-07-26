@@ -14,40 +14,40 @@ public class Simulation : MonoBehaviour
     [Range(1, 32)]
     public int numberOfBoids;
 
-    [Range(0, 1)]
+    [RangeWithStep(0, 1, 0.25f)]
     public float boidScale;
 
     public GameObject boidPrefab;
     public List<Boid> boids;
 
     [Header("Boid Behavior Range")]
-    [Range(0, 4)]
+    [RangeWithStep(0, 5, 0.5f)]
     public float separationRange;
 
-    [Range(0, 4)]
+    [RangeWithStep(0, 5, 0.5f)]
     public float alignmentRange;
 
-    [Range(0, 4)]
+    [RangeWithStep(0, 5, 0.5f)]
     public float cohesionRange;
 
     [Header("Boid Behavior Weights")]
-    [Range(0, 0.5f)]
+    [RangeWithStep(0, 1, 0.1f)]
     public float separationFactor;
 
-    [Range(0, 0.5f)]
+    [RangeWithStep(0, 1, 0.1f)]
     public float alignmentFactor;
 
-    [Range(0, 0.5f)]
+    [RangeWithStep(0, 1, 0.1f)]
     public float cohesionFactor;
 
     [Header("Boid Speed Settings")]
-    [Range(0, 4)]
+    [RangeWithStep(0, 5, 0.5f)]
     public float minSpeed;
 
-    [Range(0, 4)]
+    [RangeWithStep(0, 5, 0.5f)]
     public float maxSpeed;
 
-    [Range(6, 10)]
+    [Range(0, 10)]
     public int rotationSpeed;
 
     BoidSettings CreateBoidSettings()
