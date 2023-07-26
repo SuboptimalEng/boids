@@ -8,6 +8,7 @@ Simulating boids.
 - [Ben Eater's Boids Simulation](https://eater.net/boids)
 - [Daniel Shiffman's Boids Simulation](https://processing.org/examples/flocking.html)
 - [Sebastian Lague's Boids Coding Adventure](https://www.youtube.com/watch?v=bqtqltqcQhw)
+- [David Zulic's Custom Debug Draw Tutorial for Unity](https://medium.com/@davidzulic/unity-drawing-custom-debug-shapes-part-1-4941d3fda905)
 
 ## License
 

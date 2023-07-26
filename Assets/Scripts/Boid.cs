@@ -61,6 +61,11 @@ public class Boid : MonoBehaviour
 
     public void UpdateBoid(List<Boid> boids)
     {
+        if (ReferenceEquals(transform.gameObject, boids[0].gameObject))
+        {
+            Debug.DrawCircle(transform.position, 1f, 10, Color.black);
+        }
+
         // this vector represents the cumulative direction the
         // currBoid should take if it wants to avoid otherBoids
         // inside of its separationRange
