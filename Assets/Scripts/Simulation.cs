@@ -21,17 +21,20 @@ public class Simulation : MonoBehaviour
     public List<Boid> boids;
 
     [Header("Boid Behavior Settings")]
-    [Range(1, 4)]
-    public int visualRange;
+    [Range(0, 1)]
+    public float seperationRange;
+
+    [Range(1, 2)]
+    public float alignmentRange;
+
+    [Range(2, 3)]
+    public float visualRange;
 
     [Range(0, 0.1f)]
     public float turnFactor;
 
     [Range(0, 0.1f)]
     public float avoidFactor;
-
-    [Range(0, 2)]
-    public float protectedRange;
 
     [Header("Boid Speed Settings")]
     [Range(6, 10)]
@@ -47,21 +50,27 @@ public class Simulation : MonoBehaviour
     {
         BoidSettings boidSettings = new BoidSettings
         {
+            // simulation settings
             mapSize = mapSize,
-            visualRange = visualRange,
             rotationSpeed = rotationSpeed,
+            // visual settings
+            seperationRange = seperationRange,
+            alignmentRange = alignmentRange,
+            visualRange = visualRange,
+            turnFactor = turnFactor,
+            avoidFactor = avoidFactor,
+            // misc settings
             boidScale = boidScale,
             minSpeed = minSpeed,
             maxSpeed = maxSpeed,
-            turnFactor = turnFactor,
-            avoidFactor = avoidFactor,
-            protectedRange = protectedRange,
         };
         return boidSettings;
     }
 
     void CreateBoids()
     {
+        boids = new List<Boid>();
+
         for (int i = 0; i < numberOfObjects; i++)
         {
             float angle = i * Mathf.PI * 2 / numberOfObjects;

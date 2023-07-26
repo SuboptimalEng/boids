@@ -468,16 +468,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 3
-  numberOfObjects: 24
+  numberOfObjects: 8
   mapSize: 6
   boidScale: 0.5
   boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
     type: 3}
-  boids: []
+  boids:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  seperationRange: 1
+  alignmentRange: 2
   visualRange: 3
-  turnFactor: 0.025
+  turnFactor: 0.1
   avoidFactor: 0.075
-  protectedRange: 2
   rotationSpeed: 6
   minSpeed: 2
   maxSpeed: 3
@@ -826,7 +835,7 @@ Transform:
   m_GameObject: {fileID: 1060162301}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

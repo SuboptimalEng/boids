@@ -1,19 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public struct BoidSettings
 {
+    // simulation settings
     public int mapSize;
-    public int visualRange;
     public int rotationSpeed;
 
+    // visual settings
+    public float seperationRange;
+    public float alignmentRange;
+    public float visualRange;
+    public float turnFactor;
+    public float avoidFactor;
+
+    // misc settings
     public float boidScale;
     public float minSpeed;
     public float maxSpeed;
-    public float turnFactor;
-    public float avoidFactor;
-    public float protectedRange;
 }
 
 public class Boid : MonoBehaviour
@@ -24,6 +30,16 @@ public class Boid : MonoBehaviour
     public Vector3 velocity;
 
     bool isOutOfBounds = false;
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, boidSettings.seperationRange);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, boidSettings.alignmentRange);
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireSphere(transform.position, boidSettings.visualRange);
+    }
 
     public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
     {
@@ -80,7 +96,8 @@ public class Boid : MonoBehaviour
             // )
             // {
             float squareDist = distToOtherBoid.sqrMagnitude;
-            if (squareDist < boidSettings.visualRange)
+            // float squareDist = distToOtherBoid.magnitude;
+            if (squareDist < boidSettings.alignmentRange)
             {
                 avgDeltaVector += otherBoid.velocity;
                 neighborsCount++;
@@ -120,7 +137,8 @@ public class Boid : MonoBehaviour
             // )
             // {
             float squareDist = distToOtherBoid.sqrMagnitude;
-            if (squareDist < boidSettings.protectedRange)
+            // float squareDist = distToOtherBoid.magnitude;
+            if (squareDist < boidSettings.seperationRange)
             {
                 moveAwayDelta += currentBoidPosition - otherBoidPosition;
             }
