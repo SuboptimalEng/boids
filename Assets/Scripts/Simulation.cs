@@ -28,10 +28,10 @@ public class Simulation : MonoBehaviour
     public float separationFactor;
 
     [Range(2, 4)]
-    public float neighborDist;
+    public float alignmentRange;
 
-    [Range(4, 6)]
-    public float visualRange;
+    [Range(0, 0.5f)]
+    public float alignmentFactor;
 
     [Header("Boid Speed Settings")]
     [Range(6, 10)]
@@ -50,11 +50,11 @@ public class Simulation : MonoBehaviour
             // simulation settings
             mapSize = mapSize,
             rotationSpeed = rotationSpeed,
-            // visual settings
+            // boid behavior settings
             separationRange = separationRange,
             separationFactor = separationFactor,
-            neighborDist = neighborDist,
-            visualRange = visualRange,
+            alignmentRange = alignmentRange,
+            alignmentFactor = alignmentFactor,
             // misc settings
             boidScale = boidScale,
             minSpeed = minSpeed,

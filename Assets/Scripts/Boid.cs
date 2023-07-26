@@ -9,11 +9,11 @@ public struct BoidSettings
     public int mapSize;
     public int rotationSpeed;
 
-    // visual settings
+    // boid behavior settings
     public float separationRange;
     public float separationFactor;
-    public float neighborDist;
-    public float visualRange;
+    public float alignmentRange;
+    public float alignmentFactor;
 
     // misc settings
     public float boidScale;
@@ -40,9 +40,7 @@ public class Boid : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, boidSettings.separationRange);
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, boidSettings.neighborDist);
-        Gizmos.color = Color.gray;
-        Gizmos.DrawWireSphere(transform.position, boidSettings.visualRange);
+        Gizmos.DrawWireSphere(transform.position, boidSettings.alignmentRange);
     }
 
     public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
@@ -67,58 +65,18 @@ public class Boid : MonoBehaviour
     public void UpdateBoid(List<Boid> boids)
     {
         Vector3 separationVelocity = Separate(boids);
-        // Vector3 matchOtherBoidsVelocity = MatchOtherBoids(boids);
+        Vector3 alignmentVelocity = Align(boids);
 
         velocity += separationVelocity;
-        // velocity += matchOtherBoidsVelocity;
+        velocity += alignmentVelocity;
 
-        ClampBoidSpeed();
+        ClampBoidVelocity();
         UpdatePosition();
-    }
-
-    public Vector3 MatchOtherBoids(List<Boid> boids)
-    {
-        Vector3 matchOtherBoidsVelocity = Vector3.zero;
-        Vector3 avgDeltaVector = Vector3.zero;
-        int neighborsCount = 0;
-        Vector3 currentBoidPosition = transform.position;
-
-        foreach (Boid otherBoid in boids)
-        {
-            if (ReferenceEquals(gameObject, otherBoid.gameObject))
-            {
-                continue;
-            }
-
-            Vector3 otherBoidPosition = otherBoid.transform.position;
-            Vector3 distToOtherBoid = otherBoidPosition - currentBoidPosition;
-
-            float dist = Vector3.Distance(currentBoidPosition, otherBoidPosition);
-            float squareDist = distToOtherBoid.sqrMagnitude;
-
-            Debug.Log("dist: " + dist);
-            Debug.Log("otherboid - currboid: " + distToOtherBoid);
-            Debug.Log("square dist: " + squareDist);
-            if (squareDist < boidSettings.neighborDist)
-            {
-                avgDeltaVector += otherBoid.velocity;
-                neighborsCount++;
-            }
-
-            if (neighborsCount > 0)
-            {
-                avgDeltaVector /= neighborsCount;
-            }
-        }
-
-        matchOtherBoidsVelocity = (avgDeltaVector - this.velocity) * 0.5f;
-
-        return matchOtherBoidsVelocity;
     }
 
     public Vector3 Separate(List<Boid> boids)
     {
-        int numberOfBoidsToAvoid = 0;
+        float numOfBoidsToAvoid = 0;
         Vector3 separationVelocity = Vector3.zero;
         Vector3 currBoidPosition = transform.position;
 
@@ -151,14 +109,14 @@ public class Boid : MonoBehaviour
                 separationVelocity += dirToTravel;
 
                 // keep track of how many boids are in the separationRange
-                numberOfBoidsToAvoid++;
+                numOfBoidsToAvoid++;
             }
         }
 
-        if (numberOfBoidsToAvoid > 0)
+        if (numOfBoidsToAvoid > 0)
         {
             // scale velocity down based on number of boids in the separationRange
-            separationVelocity /= numberOfBoidsToAvoid;
+            separationVelocity /= numOfBoidsToAvoid;
         }
 
         // tune the velocity based on the customizable separationFactor
@@ -167,7 +125,46 @@ public class Boid : MonoBehaviour
         return separationVelocity;
     }
 
-    void ClampBoidSpeed()
+    Vector3 Align(List<Boid> boids)
+    {
+        float numOfBoidsToAlignWith = 0;
+        Vector3 alignmentVelocity = Vector3.zero;
+        Vector3 currBoidPosition = transform.position;
+
+        foreach (Boid otherBoid in boids)
+        {
+            if (ReferenceEquals(gameObject, otherBoid.gameObject))
+            {
+                continue;
+            }
+
+            Vector3 otherBoidPosition = otherBoid.transform.position;
+            float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
+
+            // check if the currBoid is within alignmentRange of the otherBoid
+            if (dist < boidSettings.alignmentRange)
+            {
+                // increment the alignmentVelocity based on the otherBoid's velocity
+                alignmentVelocity += otherBoid.velocity;
+                numOfBoidsToAlignWith++;
+            }
+        }
+
+        if (numOfBoidsToAlignWith > 0)
+        {
+            // average the alignmentVelocity of all boids in the alignmentRange to
+            // get a vector that represents the average direction of the flock
+            alignmentVelocity /= numOfBoidsToAlignWith;
+        }
+
+        // align the boid based on a customized alignmentFactor variable
+        // high alignmentFactor means the the boid's alignment vector
+        // will heavily influence the cumulative direction of the boid
+        alignmentVelocity *= boidSettings.alignmentFactor;
+        return alignmentVelocity;
+    }
+
+    void ClampBoidVelocity()
     {
         Vector3 position = transform.position;
         Vector3 direction = velocity.normalized;
@@ -180,21 +177,25 @@ public class Boid : MonoBehaviour
     {
         transform.position = transform.position + velocity * Time.deltaTime;
 
+        // outside of the right boundary
         if (transform.position.x > boidSettings.mapSize)
         {
             transform.position = new Vector3(-boidSettings.mapSize, 0, transform.position.z);
         }
 
+        // outside of the left boundary
         if (transform.position.x < -boidSettings.mapSize)
         {
             transform.position = new Vector3(boidSettings.mapSize, 0, transform.position.z);
         }
 
+        // outside of the top boundary
         if (transform.position.z > boidSettings.mapSize)
         {
             transform.position = new Vector3(transform.position.x, 0, -boidSettings.mapSize);
         }
 
+        // outside of the bottom boundary
         if (transform.position.z < -boidSettings.mapSize)
         {
             transform.position = new Vector3(transform.position.x, 0, boidSettings.mapSize);
