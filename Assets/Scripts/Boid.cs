@@ -65,7 +65,13 @@ public class Boid : MonoBehaviour
 
     public void UpdateBoid(List<Boid> boids)
     {
+        // this vector represents the cumulative direction the
+        // currBoid should take if it wants to avoid otherBoids
+        // inside of its separationRange
         Vector3 separationVelocity = Separate(boids);
+
+        // this vector represents the cumulative direction of
+        // the flock within the currBoid's alignmentRange
         Vector3 alignmentVelocity = Align(boids);
 
         velocity += separationVelocity;
@@ -142,7 +148,7 @@ public class Boid : MonoBehaviour
             Vector3 otherBoidPosition = otherBoid.transform.position;
             float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
 
-            // check if the currBoid is within alignmentRange of the otherBoid
+            // check if the otherBoid is within alignmentRange of the currBoid
             if (dist < boidSettings.alignmentRange)
             {
                 // increment the alignmentVelocity based on the otherBoid's velocity
