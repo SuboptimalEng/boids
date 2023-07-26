@@ -5,13 +5,13 @@ using UnityEngine;
 public class Simulation : MonoBehaviour
 {
     [Header("Simulation Settings")]
-    [Range(1, 4)]
+    [Range(1, 5)]
     public int startRadius;
 
     [Range(1, 10)]
     public int mapSize;
 
-    [Range(1, 24)]
+    [Range(1, 32)]
     public int numberOfBoids;
 
     [Range(0, 1)]
@@ -20,21 +20,22 @@ public class Simulation : MonoBehaviour
     public GameObject boidPrefab;
     public List<Boid> boids;
 
-    [Header("Boid Behavior Settings")]
+    [Header("Boid Behavior Range")]
     [Range(0, 2)]
     public float separationRange;
-
-    [Range(0, 0.5f)]
-    public float separationFactor;
 
     [Range(2, 4)]
     public float alignmentRange;
 
-    [Range(0, 0.5f)]
-    public float alignmentFactor;
-
     [Range(2, 4)]
     public float cohesionRange;
+
+    [Header("Boid Behavior Weights")]
+    [Range(0, 0.5f)]
+    public float separationFactor;
+
+    [Range(0, 0.5f)]
+    public float alignmentFactor;
 
     [Range(0, 0.5f)]
     public float cohesionFactor;
@@ -46,7 +47,7 @@ public class Simulation : MonoBehaviour
     [Range(0, 2)]
     public float minSpeed;
 
-    [Range(2, 3)]
+    [Range(2, 4)]
     public float maxSpeed;
 
     BoidSettings CreateBoidSettings()
@@ -56,12 +57,13 @@ public class Simulation : MonoBehaviour
             // simulation settings
             mapSize = mapSize,
             rotationSpeed = rotationSpeed,
-            // boid behavior settings
+            // boid behavior range
             separationRange = separationRange,
-            separationFactor = separationFactor,
             alignmentRange = alignmentRange,
-            alignmentFactor = alignmentFactor,
             cohesionRange = cohesionRange,
+            // boid behavior weights
+            separationFactor = separationFactor,
+            alignmentFactor = alignmentFactor,
             cohesionFactor = cohesionFactor,
             // misc settings
             boidScale = boidScale,
@@ -71,7 +73,7 @@ public class Simulation : MonoBehaviour
         return boidSettings;
     }
 
-    void CreateBoids()
+    public void CreateBoids()
     {
         boids = new List<Boid>();
 
@@ -98,6 +100,15 @@ public class Simulation : MonoBehaviour
     void Start()
     {
         CreateBoids();
+    }
+
+    public void UpdateBoidSettings()
+    {
+        BoidSettings updatedBoidSettings = CreateBoidSettings();
+        foreach (Boid b in boids)
+        {
+            b.boidSettings = updatedBoidSettings;
+        }
     }
 
     void Update()

@@ -6,8 +6,23 @@ using UnityEditor;
 [CustomEditor(typeof(Simulation))]
 public class SimulationEditor : Editor
 {
+    Simulation simulation;
+
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        using (var check = new EditorGUI.ChangeCheckScope())
+        {
+            base.OnInspectorGUI();
+
+            if (check.changed)
+            {
+                simulation.UpdateBoidSettings();
+            }
+        }
+    }
+
+    void OnEnable()
+    {
+        simulation = target as Simulation;
     }
 }

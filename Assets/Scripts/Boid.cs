@@ -9,12 +9,14 @@ public struct BoidSettings
     public int mapSize;
     public int rotationSpeed;
 
-    // boid behavior settings
+    // boid behavior range
     public float separationRange;
-    public float separationFactor;
     public float alignmentRange;
-    public float alignmentFactor;
     public float cohesionRange;
+
+    // boid behavior weights
+    public float separationFactor;
+    public float alignmentFactor;
     public float cohesionFactor;
 
     // misc settings
@@ -25,8 +27,7 @@ public struct BoidSettings
 
 public class Boid : MonoBehaviour
 {
-    BoidSettings boidSettings;
-
+    public BoidSettings boidSettings;
     public Vector3 forward;
     public Vector3 velocity;
 
@@ -61,11 +62,6 @@ public class Boid : MonoBehaviour
 
     public void UpdateBoid(List<Boid> boids)
     {
-        if (ReferenceEquals(transform.gameObject, boids[0].gameObject))
-        {
-            Debug.DrawCircle(transform.position, 1f, 10, Color.black);
-        }
-
         // this vector represents the cumulative direction the
         // currBoid should take if it wants to avoid otherBoids
         // inside of its separationRange
@@ -86,6 +82,20 @@ public class Boid : MonoBehaviour
 
         ClampBoidVelocity();
         UpdatePosition();
+
+        if (ReferenceEquals(transform.gameObject, boids[0].gameObject))
+        {
+            Debug.DrawCircle(transform.position, boidSettings.separationRange, 12, Color.red);
+            Debug.DrawCircle(transform.position, boidSettings.alignmentRange, 12, Color.green);
+            Debug.DrawCircle(transform.position, boidSettings.cohesionRange, 12, Color.cyan);
+        }
+    }
+
+    public void DrawDebugCircle()
+    {
+        Debug.DrawCircle(transform.position, boidSettings.separationFactor, 12, Color.red);
+        Debug.DrawCircle(transform.position, boidSettings.alignmentFactor, 12, Color.green);
+        Debug.DrawCircle(transform.position, boidSettings.cohesionFactor, 12, Color.cyan);
     }
 
     public Vector3 Separation(List<Boid> boids)
