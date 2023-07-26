@@ -24,6 +24,7 @@ public struct BoidSettings
 // todos
 // follow game object with camera
 // add visualization for view dist, avoid dist, and neighbor dist
+// add herding with controllable boid with custom boid settings (high avoidFactor)
 // add controls that allow immediate change in game mechanics
 // randomize colors of each boid
 // update boid model
