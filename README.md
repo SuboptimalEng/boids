@@ -6,7 +6,7 @@ Simulating boids.
 
 - [Boids by Craig Reynolds](https://www.red3d.com/cwr/boids/)
 - [Ben Eater's Boids Simulation](https://eater.net/boids)
-- [V. Hunter Adams' Boids Algorithm](https://vanhunteradams.com/Pico/Animal_Movement/Boids-algorithm.html)
+- [Daniel Shiffman's Boids Simulation](https://processing.org/examples/flocking.html)
 - [Sebastian Lague's Boids Coding Adventure](https://www.youtube.com/watch?v=bqtqltqcQhw)
 
 ## License

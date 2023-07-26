@@ -467,9 +467,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 738496c3eb2224a05a5df1e49c915a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 4
+  radius: 3
   numberOfObjects: 24
-  mapSize: 6
+  mapSize: 10
   boidScale: 0.5
   boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
     type: 3}
@@ -482,11 +482,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  seperationRange: 1
-  alignmentRange: 2
-  visualRange: 3
+  separationRange: 2
+  separationFactor: 0
+  neighborDist: 4
+  visualRange: 6
   turnFactor: 0.1
-  avoidFactor: 0.075
   rotationSpeed: 6
   minSpeed: 2
   maxSpeed: 3

@@ -11,7 +11,7 @@ public class Simulation : MonoBehaviour
     [Range(1, 24)]
     public int numberOfObjects;
 
-    [Range(1, 8)]
+    [Range(1, 10)]
     public int mapSize;
 
     [Range(0, 1)]
@@ -21,20 +21,20 @@ public class Simulation : MonoBehaviour
     public List<Boid> boids;
 
     [Header("Boid Behavior Settings")]
-    [Range(0, 1)]
-    public float seperationRange;
+    [Range(0, 2)]
+    public float separationRange;
 
-    [Range(1, 2)]
-    public float alignmentRange;
+    [Range(0, 0.5f)]
+    public float separationFactor;
 
-    [Range(2, 3)]
+    [Range(2, 4)]
+    public float neighborDist;
+
+    [Range(4, 6)]
     public float visualRange;
 
     [Range(0, 0.1f)]
     public float turnFactor;
-
-    [Range(0, 0.1f)]
-    public float avoidFactor;
 
     [Header("Boid Speed Settings")]
     [Range(6, 10)]
@@ -54,11 +54,11 @@ public class Simulation : MonoBehaviour
             mapSize = mapSize,
             rotationSpeed = rotationSpeed,
             // visual settings
-            seperationRange = seperationRange,
-            alignmentRange = alignmentRange,
+            separationRange = separationRange,
+            separationFactor = separationFactor,
+            neighborDist = neighborDist,
             visualRange = visualRange,
             turnFactor = turnFactor,
-            avoidFactor = avoidFactor,
             // misc settings
             boidScale = boidScale,
             minSpeed = minSpeed,
