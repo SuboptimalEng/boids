@@ -33,6 +33,12 @@ public class Simulation : MonoBehaviour
     [Range(0, 0.5f)]
     public float alignmentFactor;
 
+    [Range(2, 4)]
+    public float cohesionRange;
+
+    [Range(0, 0.5f)]
+    public float cohesionFactor;
+
     [Header("Boid Speed Settings")]
     [Range(6, 10)]
     public int rotationSpeed;
@@ -55,6 +61,8 @@ public class Simulation : MonoBehaviour
             separationFactor = separationFactor,
             alignmentRange = alignmentRange,
             alignmentFactor = alignmentFactor,
+            cohesionRange = cohesionRange,
+            cohesionFactor = cohesionFactor,
             // misc settings
             boidScale = boidScale,
             minSpeed = minSpeed,

@@ -482,10 +482,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  separationRange: 2
-  separationFactor: 0.1
-  alignmentRange: 4
+  separationRange: 1.75
+  separationFactor: 0.25
+  alignmentRange: 2
   alignmentFactor: 0.1
+  cohesionRange: 2
+  cohesionFactor: 0.1
   rotationSpeed: 6
   minSpeed: 2
   maxSpeed: 3

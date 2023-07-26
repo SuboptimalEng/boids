@@ -14,6 +14,8 @@ public struct BoidSettings
     public float separationFactor;
     public float alignmentRange;
     public float alignmentFactor;
+    public float cohesionRange;
+    public float cohesionFactor;
 
     // misc settings
     public float boidScale;
@@ -42,6 +44,8 @@ public class Boid : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, boidSettings.separationRange);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, boidSettings.alignmentRange);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, boidSettings.cohesionRange);
     }
 
     public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
@@ -68,22 +72,28 @@ public class Boid : MonoBehaviour
         // this vector represents the cumulative direction the
         // currBoid should take if it wants to avoid otherBoids
         // inside of its separationRange
-        Vector3 separationVelocity = Separate(boids);
+        Vector3 separationVelocity = Separation(boids);
 
         // this vector represents the cumulative direction of
         // the flock within the currBoid's alignmentRange
-        Vector3 alignmentVelocity = Align(boids);
+        Vector3 alignmentVelocity = Alignment(boids);
+
+        // this vector represents the cumulative direction the
+        // currBoid needs to travel if it wants to be at the
+        // center of its flock mates
+        Vector3 cohesionVelocity = Cohesion(boids);
 
         velocity += separationVelocity;
         velocity += alignmentVelocity;
+        velocity += cohesionVelocity;
 
         ClampBoidVelocity();
         UpdatePosition();
     }
 
-    public Vector3 Separate(List<Boid> boids)
+    public Vector3 Separation(List<Boid> boids)
     {
-        float numOfBoidsToAvoid = 0;
+        int numOfBoidsToAvoid = 0;
         Vector3 separationVelocity = Vector3.zero;
         Vector3 currBoidPosition = transform.position;
 
@@ -118,11 +128,13 @@ public class Boid : MonoBehaviour
             }
         }
 
-        if (numOfBoidsToAvoid > 0)
+        if (numOfBoidsToAvoid == 0)
         {
-            // scale velocity down based on number of boids in the separationRange
-            separationVelocity /= numOfBoidsToAvoid;
+            return Vector3.zero;
         }
+
+        // scale velocity down based on number of boids in the separationRange
+        separationVelocity /= (float)numOfBoidsToAvoid;
 
         // tune the velocity based on the customizable separationFactor
         separationVelocity *= boidSettings.separationFactor;
@@ -130,9 +142,9 @@ public class Boid : MonoBehaviour
         return separationVelocity;
     }
 
-    Vector3 Align(List<Boid> boids)
+    Vector3 Alignment(List<Boid> boids)
     {
-        float numOfBoidsToAlignWith = 0;
+        int numOfBoidsToAlignWith = 0;
         Vector3 alignmentVelocity = Vector3.zero;
         Vector3 currBoidPosition = transform.position;
 
@@ -155,18 +167,68 @@ public class Boid : MonoBehaviour
             }
         }
 
-        if (numOfBoidsToAlignWith > 0)
+        if (numOfBoidsToAlignWith == 0)
         {
-            // average the alignmentVelocity of all boids in the alignmentRange to
-            // get a vector that represents the average direction of the flock
-            alignmentVelocity /= numOfBoidsToAlignWith;
+            return Vector3.zero;
         }
+
+        // average the alignmentVelocity of all boids in the alignmentRange to
+        // get a vector that represents the average direction of the flock
+        alignmentVelocity /= (float)numOfBoidsToAlignWith;
 
         // align the boid based on a customized alignmentFactor variable
         // high alignmentFactor means the the boid's alignment vector
         // will heavily influence the cumulative direction of the boid
         alignmentVelocity *= boidSettings.alignmentFactor;
         return alignmentVelocity;
+    }
+
+    Vector3 Cohesion(List<Boid> boids)
+    {
+        int numOfBoidsInFlock = 0;
+        Vector3 positionToMoveTowards = Vector3.zero;
+        Vector3 currBoidPosition = transform.position;
+
+        foreach (Boid otherBoid in boids)
+        {
+            if (ReferenceEquals(gameObject, otherBoid.gameObject))
+            {
+                continue;
+            }
+
+            Vector3 otherBoidPosition = otherBoid.transform.position;
+            float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
+
+            if (dist < boidSettings.cohesionRange)
+            {
+                // keep track of the positions of all otherBoids that are in
+                // the currBoid's cohesionRange
+                positionToMoveTowards += otherBoidPosition;
+                numOfBoidsInFlock++;
+            }
+        }
+
+        if (numOfBoidsInFlock == 0)
+        {
+            return Vector3.zero;
+        }
+
+        // this represents the position that the currBoid needs to move towards
+        // if it wants to be at the average position of its flock mates
+        positionToMoveTowards /= (float)numOfBoidsInFlock;
+
+        // cohesionDirection is the vector that points from the currBoid's position
+        // to the center of the flock (which we just calculated)
+        Vector3 cohesionDirection = positionToMoveTowards - currBoidPosition;
+
+        // we normalize this vector because the distance can vary based on the cohesionRange
+        cohesionDirection.Normalize();
+
+        // align the boid based on a customized cohesionFactor variable
+        // a high cohesionFactor means the the boid will strongly move
+        // towards the center of the flock
+        Vector3 cohesionVelocity = cohesionDirection * boidSettings.cohesionFactor;
+        return cohesionVelocity;
     }
 
     void ClampBoidVelocity()
