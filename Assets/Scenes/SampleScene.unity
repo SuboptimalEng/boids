@@ -484,9 +484,8 @@ MonoBehaviour:
   - {fileID: 0}
   separationRange: 2
   separationFactor: 0.1
-  neighborDist: 4
-  visualRange: 6
-  turnFactor: 0.1
+  alignmentRange: 4
+  alignmentFactor: 0.1
   rotationSpeed: 6
   minSpeed: 2
   maxSpeed: 3
