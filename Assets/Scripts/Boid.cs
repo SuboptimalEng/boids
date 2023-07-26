@@ -47,12 +47,55 @@ public class Boid : MonoBehaviour
     public void UpdateBoid(List<Boid> boids)
     {
         Vector3 avoidOtherBoidsVelocity = AvoidOtherBoids(boids);
+        Vector3 matchOtherBoidsVelocity = MatchOtherBoids(boids);
 
         velocity += avoidOtherBoidsVelocity;
+        velocity += matchOtherBoidsVelocity;
 
         AvoidMapBoundary();
         ClampBoidSpeed();
         UpdatePosition();
+    }
+
+    public Vector3 MatchOtherBoids(List<Boid> boids)
+    {
+        Vector3 matchOtherBoidsVelocity = Vector3.zero;
+        Vector3 avgDeltaVector = Vector3.zero;
+        int neighborsCount = 0;
+        Vector3 currentBoidPosition = transform.position;
+
+        foreach (Boid otherBoid in boids)
+        {
+            if (ReferenceEquals(gameObject, otherBoid.gameObject))
+            {
+                continue;
+            }
+
+            Vector3 otherBoidPosition = otherBoid.transform.position;
+
+            Vector3 distToOtherBoid = otherBoidPosition - currentBoidPosition;
+            // if (
+            //     Mathf.Abs(distToOtherBoid.x) < boidSettings.visualRange
+            //     && Mathf.Abs(distToOtherBoid.y) < boidSettings.visualRange
+            // )
+            // {
+            float squareDist = distToOtherBoid.sqrMagnitude;
+            if (squareDist < boidSettings.visualRange)
+            {
+                avgDeltaVector += otherBoid.velocity;
+                neighborsCount++;
+            }
+            // }
+
+            if (neighborsCount > 0)
+            {
+                avgDeltaVector /= neighborsCount;
+            }
+        }
+
+        matchOtherBoidsVelocity = (avgDeltaVector - this.velocity) * 0.5f;
+
+        return matchOtherBoidsVelocity;
     }
 
     public Vector3 AvoidOtherBoids(List<Boid> boids)
@@ -71,17 +114,17 @@ public class Boid : MonoBehaviour
             Vector3 otherBoidPosition = otherBoid.transform.position;
 
             Vector3 distToOtherBoid = otherBoidPosition - currentBoidPosition;
-            if (
-                Mathf.Abs(distToOtherBoid.x) < boidSettings.visualRange
-                && Mathf.Abs(distToOtherBoid.y) < boidSettings.visualRange
-            )
+            // if (
+            //     Mathf.Abs(distToOtherBoid.x) < boidSettings.visualRange
+            //     && Mathf.Abs(distToOtherBoid.y) < boidSettings.visualRange
+            // )
+            // {
+            float squareDist = distToOtherBoid.sqrMagnitude;
+            if (squareDist < boidSettings.protectedRange)
             {
-                float squareDist = distToOtherBoid.sqrMagnitude;
-                if (squareDist < boidSettings.protectedRange)
-                {
-                    moveAwayDelta += currentBoidPosition - otherBoidPosition;
-                }
+                moveAwayDelta += currentBoidPosition - otherBoidPosition;
             }
+            // }
         }
 
         // velocity += moveAwayDelta * boidSettings.avoidFactor;

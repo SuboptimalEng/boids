@@ -8,10 +8,10 @@ public class Simulation : MonoBehaviour
     [Range(1, 4)]
     public int radius;
 
-    [Range(1, 12)]
+    [Range(1, 24)]
     public int numberOfObjects;
 
-    [Range(1, 5)]
+    [Range(1, 8)]
     public int mapSize;
 
     [Range(0, 1)]
