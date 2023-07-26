@@ -21,13 +21,13 @@ public class Simulation : MonoBehaviour
     public List<Boid> boids;
 
     [Header("Boid Behavior Range")]
-    [Range(0, 2)]
+    [Range(0, 4)]
     public float separationRange;
 
-    [Range(2, 4)]
+    [Range(0, 4)]
     public float alignmentRange;
 
-    [Range(2, 4)]
+    [Range(0, 4)]
     public float cohesionRange;
 
     [Header("Boid Behavior Weights")]
