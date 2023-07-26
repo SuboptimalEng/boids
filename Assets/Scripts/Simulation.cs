@@ -107,6 +107,13 @@ public class Simulation : MonoBehaviour
         BoidSettings updatedBoidSettings = CreateBoidSettings();
         foreach (Boid b in boids)
         {
+            // boid will be undefined when the game is not running
+            // adding this check prevents a console error
+            if (b == null)
+            {
+                continue;
+            }
+
             b.boidSettings = updatedBoidSettings;
         }
     }
