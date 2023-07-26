@@ -41,14 +41,14 @@ public class Simulation : MonoBehaviour
     public float cohesionFactor;
 
     [Header("Boid Speed Settings")]
-    [Range(6, 10)]
-    public int rotationSpeed;
-
-    [Range(0, 2)]
+    [Range(0, 4)]
     public float minSpeed;
 
-    [Range(2, 4)]
+    [Range(0, 4)]
     public float maxSpeed;
+
+    [Range(6, 10)]
+    public int rotationSpeed;
 
     BoidSettings CreateBoidSettings()
     {

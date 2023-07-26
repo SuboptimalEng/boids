@@ -470,7 +470,7 @@ MonoBehaviour:
   startRadius: 5
   mapSize: 10
   numberOfBoids: 32
-  boidScale: 0.75
+  boidScale: 0.5
   boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
     type: 3}
   boids: []
