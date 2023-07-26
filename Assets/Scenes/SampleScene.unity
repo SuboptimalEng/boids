@@ -467,20 +467,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 738496c3eb2224a05a5df1e49c915a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2
-  numberOfObjects: 12
-  mapSize: 4
+  radius: 3
+  numberOfObjects: 24
+  mapSize: 6
   boidScale: 0.5
   boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
     type: 3}
   boids: []
-  visualRange: 4
-  turnFactor: 0.05
+  visualRange: 3
+  turnFactor: 0.025
   avoidFactor: 0.075
   protectedRange: 2
-  rotationSpeed: 8
+  rotationSpeed: 6
   minSpeed: 2
-  maxSpeed: 2.5
+  maxSpeed: 3
 --- !u!4 &379658365
 Transform:
   m_ObjectHideFlags: 0
