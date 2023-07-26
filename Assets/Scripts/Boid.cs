@@ -95,8 +95,6 @@ public class Boid : MonoBehaviour
             }
 
             Vector3 otherBoidPosition = otherBoid.transform.position;
-
-            // get the distance from the currBoid to the otherBoid
             float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
 
             // check if the otherBoid is running too close to the currBoid
