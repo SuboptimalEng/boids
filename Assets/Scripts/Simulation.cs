@@ -6,13 +6,16 @@ public class Simulation : MonoBehaviour
 {
     [Header("Simulation Settings")]
     [Range(1, 4)]
-    public int radius;
-
-    [Range(1, 24)]
-    public int numberOfObjects;
+    public int startRadius;
 
     [Range(1, 10)]
     public int mapSize;
+
+    [Range(1, 24)]
+    public int numberOfBoids;
+
+    [Range(0, 1)]
+    public float boidScale;
 
     public GameObject boidPrefab;
     public List<Boid> boids;
@@ -61,6 +64,7 @@ public class Simulation : MonoBehaviour
             cohesionRange = cohesionRange,
             cohesionFactor = cohesionFactor,
             // misc settings
+            boidScale = boidScale,
             minSpeed = minSpeed,
             maxSpeed = maxSpeed,
         };
@@ -71,11 +75,11 @@ public class Simulation : MonoBehaviour
     {
         boids = new List<Boid>();
 
-        for (int i = 0; i < numberOfObjects; i++)
+        for (int i = 0; i < numberOfBoids; i++)
         {
-            float angle = i * Mathf.PI * 2 / numberOfObjects;
-            float x = Mathf.Cos(angle) * radius;
-            float z = Mathf.Sin(angle) * radius;
+            float angle = i * Mathf.PI * 2 / numberOfBoids;
+            float x = Mathf.Cos(angle) * startRadius;
+            float z = Mathf.Sin(angle) * startRadius;
             Vector3 position = transform.position + new Vector3(x, 0, z);
 
             float angleDegrees = -angle * Mathf.Rad2Deg;
