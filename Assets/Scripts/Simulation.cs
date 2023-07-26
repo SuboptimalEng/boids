@@ -33,9 +33,6 @@ public class Simulation : MonoBehaviour
     [Range(4, 6)]
     public float visualRange;
 
-    [Range(0, 0.1f)]
-    public float turnFactor;
-
     [Header("Boid Speed Settings")]
     [Range(6, 10)]
     public int rotationSpeed;
@@ -58,7 +55,6 @@ public class Simulation : MonoBehaviour
             separationFactor = separationFactor,
             neighborDist = neighborDist,
             visualRange = visualRange,
-            turnFactor = turnFactor,
             // misc settings
             boidScale = boidScale,
             minSpeed = minSpeed,

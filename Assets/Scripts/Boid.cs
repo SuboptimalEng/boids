@@ -14,7 +14,6 @@ public struct BoidSettings
     public float separationFactor;
     public float neighborDist;
     public float visualRange;
-    public float turnFactor;
 
     // misc settings
     public float boidScale;
@@ -23,8 +22,11 @@ public struct BoidSettings
 }
 
 // todos
-// - follow game object with camera
-// - add visualization for view dist, avoid dist, and neighbor dist
+// follow game object with camera
+// add visualization for view dist, avoid dist, and neighbor dist
+// add controls that allow immediate change in game mechanics
+// randomize colors of each boid
+// update boid model
 
 public class Boid : MonoBehaviour
 {
@@ -32,8 +34,6 @@ public class Boid : MonoBehaviour
 
     public Vector3 forward;
     public Vector3 velocity;
-
-    bool isOutOfBounds = false;
 
     private void OnDrawGizmosSelected()
     {
@@ -72,7 +72,6 @@ public class Boid : MonoBehaviour
         velocity += separationVelocity;
         // velocity += matchOtherBoidsVelocity;
 
-        // AvoidMapBoundary();
         ClampBoidSpeed();
         UpdatePosition();
     }
@@ -168,50 +167,8 @@ public class Boid : MonoBehaviour
         return separationVelocity;
     }
 
-    void AvoidMapBoundary()
-    {
-        isOutOfBounds = false;
-        Vector3 position = transform.position;
-
-        // outside top
-        if (position.z > boidSettings.mapSize)
-        {
-            velocity.z -= boidSettings.turnFactor;
-            isOutOfBounds = true;
-        }
-
-        // outside right
-        if (position.x > boidSettings.mapSize)
-        {
-            velocity.x -= boidSettings.turnFactor;
-            isOutOfBounds = true;
-        }
-
-        // outside left
-        if (position.x < -boidSettings.mapSize)
-        {
-            velocity.x += boidSettings.turnFactor;
-            isOutOfBounds = true;
-        }
-
-        // outside bottom
-        if (position.z < -boidSettings.mapSize)
-        {
-            velocity.z += boidSettings.turnFactor;
-            isOutOfBounds = true;
-        }
-    }
-
     void ClampBoidSpeed()
     {
-        // Note: Do not clamp the speed of the boid if it is out of
-        // bounds. This ensures that the boid smoothly returns back
-        // onto the map.
-        if (isOutOfBounds)
-        {
-            return;
-        }
-
         Vector3 position = transform.position;
         Vector3 direction = velocity.normalized;
         float speed = velocity.magnitude;
