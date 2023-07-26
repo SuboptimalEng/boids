@@ -14,9 +14,6 @@ public class Simulation : MonoBehaviour
     [Range(1, 10)]
     public int mapSize;
 
-    [Range(0, 1)]
-    public float boidScale;
-
     public GameObject boidPrefab;
     public List<Boid> boids;
 
@@ -64,7 +61,6 @@ public class Simulation : MonoBehaviour
             cohesionRange = cohesionRange,
             cohesionFactor = cohesionFactor,
             // misc settings
-            boidScale = boidScale,
             minSpeed = minSpeed,
             maxSpeed = maxSpeed,
         };

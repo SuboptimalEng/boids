@@ -18,7 +18,6 @@ public struct BoidSettings
     public float cohesionFactor;
 
     // misc settings
-    public float boidScale;
     public float minSpeed;
     public float maxSpeed;
 }
@@ -53,8 +52,6 @@ public class Boid : MonoBehaviour
         this.boidSettings = boidSettings;
         this.forward = rotation * Vector3.forward;
         this.velocity = this.boidSettings.maxSpeed * forward;
-
-        transform.localScale *= this.boidSettings.boidScale;
     }
 
     void Update()
