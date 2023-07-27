@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneViewCameraControls : MonoBehaviour
+public class TestCameraController : MonoBehaviour
 {
     [RangeWithStep(0, 0.2f, 0.02f)]
     public float dragSpeed;
@@ -13,8 +13,8 @@ public class SceneViewCameraControls : MonoBehaviour
     [RangeWithStep(1, 5, 1)]
     public float zoomSpeed;
 
-    // [RangeWithStep(1, 10, 1)]
-    // public float moveSpeed;
+    [RangeWithStep(1, 10, 1)]
+    public float moveSpeed;
 
     bool isGrabbing = false;
     Vector3 initialMousePosition;
@@ -88,15 +88,15 @@ public class SceneViewCameraControls : MonoBehaviour
         transform.Translate(Vector3.forward * scroll * zoomSpeed, Space.Self);
     }
 
-    // void HandleCameraMovement()
-    // {
-    //     float horizontal = Input.GetAxis("Horizontal");
-    //     float vertical = Input.GetAxis("Vertical");
-    //     Vector3 moveDir = new Vector3(horizontal, 0f, vertical);
-    //     moveDir.Normalize();
-    //     if (moveDir != Vector3.zero)
-    //     {
-    //         transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
-    //     }
-    // }
+    void HandleCameraMovement()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 moveDir = new Vector3(horizontal, 0f, vertical);
+        moveDir.Normalize();
+        if (moveDir != Vector3.zero)
+        {
+            transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
+        }
+    }
 }
