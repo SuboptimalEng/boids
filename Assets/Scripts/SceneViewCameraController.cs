@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestCameraController : MonoBehaviour
+public class SceneViewCameraController : MonoBehaviour
 {
     [RangeWithStep(0, 1, 0.1f)]
     public float dragSpeed;
