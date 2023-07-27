@@ -478,9 +478,9 @@ MonoBehaviour:
   separationEnabled: 0
   alignmentEnabled: 0
   cohesionEnabled: 0
-  separationRange: 1.5
-  alignmentRange: 2
-  cohesionRange: 2.5
+  separationRange: 2
+  alignmentRange: 3
+  cohesionRange: 4
   separationFactor: 0.1
   alignmentFactor: 0.1
   cohesionFactor: 0.1
