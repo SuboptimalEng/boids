@@ -373,8 +373,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 16
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -467,13 +467,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 738496c3eb2224a05a5df1e49c915a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startRadius: 5
-  mapSize: 10
-  numberOfBoids: 32
+  mapWidth: 18
+  mapHeight: 14
+  startRadius: 8
+  numberOfBoids: 64
   boidScale: 0.75
   boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
     type: 3}
   boids: []
+  separationEnabled: 0
+  alignmentEnabled: 0
+  cohesionEnabled: 0
   separationRange: 1.5
   alignmentRange: 2
   cohesionRange: 2.5
@@ -828,7 +832,7 @@ Transform:
   m_GameObject: {fileID: 1060162301}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 4, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

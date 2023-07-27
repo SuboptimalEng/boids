@@ -6,8 +6,14 @@ using UnityEditor;
 public struct BoidSettings
 {
     // simulation settings
-    public int mapSize;
+    public int mapWidth;
+    public int mapHeight;
     public int rotationSpeed;
+
+    // flags for each phase
+    public bool separationEnabled;
+    public bool alignmentEnabled;
+    public bool cohesionEnabled;
 
     // boid behavior range
     public float separationRange;
@@ -48,7 +54,7 @@ public class Boid : MonoBehaviour
         transform.localScale *= this.boidSettings.boidScale;
     }
 
-    void Update()
+    void UpdateRotation()
     {
         Quaternion targetRotation = Quaternion.LookRotation(velocity);
         transform.rotation = Quaternion.Lerp(
@@ -74,12 +80,26 @@ public class Boid : MonoBehaviour
         // center of its flock mates
         Vector3 cohesionVelocity = Cohesion(boids);
 
-        velocity += separationVelocity;
-        velocity += alignmentVelocity;
-        velocity += cohesionVelocity;
+        // velocity += separationVelocity;
+        // velocity += alignmentVelocity;
+        // velocity += cohesionVelocity;
+
+        if (boidSettings.separationEnabled)
+        {
+            velocity += separationVelocity;
+        }
+        if (boidSettings.alignmentEnabled)
+        {
+            velocity += alignmentVelocity;
+        }
+        if (boidSettings.cohesionEnabled)
+        {
+            velocity += cohesionVelocity;
+        }
 
         ClampBoidVelocity();
         UpdatePosition();
+        UpdateRotation();
 
         if (ReferenceEquals(transform.gameObject, boids[0].gameObject))
         {
@@ -250,27 +270,27 @@ public class Boid : MonoBehaviour
         transform.position = transform.position + velocity * Time.deltaTime;
 
         // outside of the right boundary
-        if (transform.position.x > boidSettings.mapSize)
+        if (transform.position.x > boidSettings.mapWidth)
         {
-            transform.position = new Vector3(-boidSettings.mapSize, 0, transform.position.z);
+            transform.position = new Vector3(-boidSettings.mapWidth, 0, transform.position.z);
         }
 
         // outside of the left boundary
-        if (transform.position.x < -boidSettings.mapSize)
+        if (transform.position.x < -boidSettings.mapWidth)
         {
-            transform.position = new Vector3(boidSettings.mapSize, 0, transform.position.z);
+            transform.position = new Vector3(boidSettings.mapWidth, 0, transform.position.z);
         }
 
         // outside of the top boundary
-        if (transform.position.z > boidSettings.mapSize)
+        if (transform.position.z > boidSettings.mapHeight)
         {
-            transform.position = new Vector3(transform.position.x, 0, -boidSettings.mapSize);
+            transform.position = new Vector3(transform.position.x, 0, -boidSettings.mapHeight);
         }
 
         // outside of the bottom boundary
-        if (transform.position.z < -boidSettings.mapSize)
+        if (transform.position.z < -boidSettings.mapHeight)
         {
-            transform.position = new Vector3(transform.position.x, 0, boidSettings.mapSize);
+            transform.position = new Vector3(transform.position.x, 0, boidSettings.mapHeight);
         }
     }
 }

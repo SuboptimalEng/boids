@@ -5,13 +5,16 @@ using UnityEngine;
 public class Simulation : MonoBehaviour
 {
     [Header("Simulation Settings")]
-    [Range(1, 5)]
-    public int startRadius;
+    [Range(1, 20)]
+    public int mapWidth;
+
+    [Range(1, 20)]
+    public int mapHeight;
 
     [Range(1, 10)]
-    public int mapSize;
+    public int startRadius;
 
-    [Range(1, 32)]
+    [Range(1, 64)]
     public int numberOfBoids;
 
     [RangeWithStep(0, 1, 0.25f)]
@@ -19,6 +22,11 @@ public class Simulation : MonoBehaviour
 
     public GameObject boidPrefab;
     public List<Boid> boids;
+
+    [Header("Boid Behavior Flags")]
+    public bool separationEnabled;
+    public bool alignmentEnabled;
+    public bool cohesionEnabled;
 
     [Header("Boid Behavior Range")]
     [RangeWithStep(0, 5, 0.5f)]
@@ -55,8 +63,13 @@ public class Simulation : MonoBehaviour
         BoidSettings boidSettings = new BoidSettings
         {
             // simulation settings
-            mapSize = mapSize,
+            mapWidth = mapWidth,
+            mapHeight = mapHeight,
             rotationSpeed = rotationSpeed,
+            // flags for each phase
+            separationEnabled = separationEnabled,
+            alignmentEnabled = alignmentEnabled,
+            cohesionEnabled = cohesionEnabled,
             // boid behavior range
             separationRange = separationRange,
             alignmentRange = alignmentRange,
