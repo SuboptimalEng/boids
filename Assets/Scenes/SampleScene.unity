@@ -469,8 +469,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 18
   mapHeight: 14
-  startRadius: 8
-  numberOfBoids: 64
+  startRadius: 5
+  numberOfBoids: 32
   boidScale: 0.75
   boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
     type: 3}
@@ -481,12 +481,12 @@ MonoBehaviour:
   separationRange: 1.5
   alignmentRange: 2
   cohesionRange: 2.5
-  separationFactor: 0.25
+  separationFactor: 0.1
   alignmentFactor: 0.1
   cohesionFactor: 0.1
   minSpeed: 1.5
   maxSpeed: 2
-  rotationSpeed: 1
+  rotationSpeed: 10
 --- !u!4 &379658365
 Transform:
   m_ObjectHideFlags: 0
