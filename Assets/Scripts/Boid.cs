@@ -28,7 +28,6 @@ public struct BoidSettings
 public class Boid : MonoBehaviour
 {
     public BoidSettings boidSettings;
-    public Vector3 forward;
     public Vector3 velocity;
 
     private void OnDrawGizmosSelected()
@@ -44,8 +43,7 @@ public class Boid : MonoBehaviour
     public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
     {
         this.boidSettings = boidSettings;
-        this.forward = rotation * Vector3.forward;
-        this.velocity = this.boidSettings.maxSpeed * forward;
+        this.velocity = rotation * Vector3.forward * this.boidSettings.maxSpeed;
 
         transform.localScale *= this.boidSettings.boidScale;
     }
