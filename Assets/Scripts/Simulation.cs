@@ -5,11 +5,11 @@ using UnityEngine;
 public class Simulation : MonoBehaviour
 {
     [Header("Simulation Settings")]
-    [Range(1, 20)]
-    public int mapWidth;
-
-    [Range(1, 20)]
+    [Range(1, 15)]
     public int mapHeight;
+
+    [Range(1, 15)]
+    public int mapWidth;
 
     [Range(1, 10)]
     public int startRadius;
@@ -63,9 +63,8 @@ public class Simulation : MonoBehaviour
         BoidSettings boidSettings = new BoidSettings
         {
             // simulation settings
-            mapWidth = mapWidth,
             mapHeight = mapHeight,
-            rotationSpeed = rotationSpeed,
+            mapWidth = mapWidth,
             // flags for each phase
             separationEnabled = separationEnabled,
             alignmentEnabled = alignmentEnabled,
@@ -82,6 +81,7 @@ public class Simulation : MonoBehaviour
             boidScale = boidScale,
             minSpeed = minSpeed,
             maxSpeed = maxSpeed,
+            rotationSpeed = rotationSpeed,
         };
         return boidSettings;
     }

@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6920116202222419103
 Transform:
   m_ObjectHideFlags: 0
@@ -30,9 +30,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2477297412567272144}
   m_Father: {fileID: 2326211221164047253}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4765929045683736987
 MeshFilter:
@@ -128,7 +129,7 @@ Transform:
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1364234871098445172}
+  m_Father: {fileID: 6920116202222419103}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1034933829933851243
@@ -224,8 +225,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1364234871098445172}
   - {fileID: 6920116202222419103}
+  - {fileID: 1364234871098445172}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -241,8 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 859b42c7ce6344a64b2678b8820167cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugViewEnabled: 0
   velocity: {x: 0, y: 0, z: 0}
+  debugViewEnabled: 0
 --- !u!65 &4054346765732343043
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -274,7 +275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1364234871098445172
 Transform:
   m_ObjectHideFlags: 0
@@ -286,10 +287,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2477297412567272144}
+  m_Children: []
   m_Father: {fileID: 2326211221164047253}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7331878145495202034
 MeshFilter:

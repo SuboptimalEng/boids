@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestCameraController : MonoBehaviour
 {
-    [RangeWithStep(0, 0.2f, 0.02f)]
+    [RangeWithStep(0, 1, 0.1f)]
     public float dragSpeed;
 
     [RangeWithStep(1, 5, 1)]
@@ -45,7 +45,8 @@ public class TestCameraController : MonoBehaviour
         if (Input.GetMouseButton(0) && isGrabbing)
         {
             Vector3 currentMousePosition = Input.mousePosition;
-            Vector3 difference = (initialMousePosition - currentMousePosition) * dragSpeed; // Adjust the sensitivity
+            Vector3 difference =
+                (initialMousePosition - currentMousePosition).normalized * dragSpeed;
 
             transform.Translate(difference);
             initialMousePosition = currentMousePosition;

@@ -6,9 +6,8 @@ using UnityEditor;
 public struct BoidSettings
 {
     // simulation settings
-    public int mapWidth;
     public int mapHeight;
-    public int rotationSpeed;
+    public int mapWidth;
 
     // flags for each phase
     public bool separationEnabled;
@@ -29,13 +28,14 @@ public struct BoidSettings
     public float boidScale;
     public float minSpeed;
     public float maxSpeed;
+    public int rotationSpeed;
 }
 
 public class Boid : MonoBehaviour
 {
     public BoidSettings boidSettings;
     public Vector3 velocity;
-    public bool debugViewEnabled;
+    bool debugViewEnabled;
 
     public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
     {
@@ -270,18 +270,6 @@ public class Boid : MonoBehaviour
     {
         transform.position = transform.position + velocity * Time.deltaTime;
 
-        // outside of the right boundary
-        if (transform.position.x > boidSettings.mapWidth)
-        {
-            transform.position = new Vector3(-boidSettings.mapWidth, 0, transform.position.z);
-        }
-
-        // outside of the left boundary
-        if (transform.position.x < -boidSettings.mapWidth)
-        {
-            transform.position = new Vector3(boidSettings.mapWidth, 0, transform.position.z);
-        }
-
         // outside of the top boundary
         if (transform.position.z > boidSettings.mapHeight)
         {
@@ -292,6 +280,18 @@ public class Boid : MonoBehaviour
         if (transform.position.z < -boidSettings.mapHeight)
         {
             transform.position = new Vector3(transform.position.x, 0, boidSettings.mapHeight);
+        }
+
+        // outside of the right boundary
+        if (transform.position.x > boidSettings.mapWidth)
+        {
+            transform.position = new Vector3(-boidSettings.mapWidth, 0, transform.position.z);
+        }
+
+        // outside of the left boundary
+        if (transform.position.x < -boidSettings.mapWidth)
+        {
+            transform.position = new Vector3(boidSettings.mapWidth, 0, transform.position.z);
         }
     }
 }
