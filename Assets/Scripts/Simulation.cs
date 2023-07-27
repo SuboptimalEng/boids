@@ -133,9 +133,40 @@ public class Simulation : MonoBehaviour
 
     void Update()
     {
+        CheckForUserInput();
+
         foreach (Boid b in boids)
         {
             b.UpdateBoid(boids);
+        }
+    }
+
+    void CheckForUserInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                GameObject boidGameObject = hit.collider.gameObject;
+                Boid b = boidGameObject.GetComponent<Boid>();
+                b.ToggleDebugView();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DisableAllBoidDebugViews();
+        }
+    }
+
+    void DisableAllBoidDebugViews()
+    {
+        foreach (Boid b in boids)
+        {
+            b.DisableDebugView();
         }
     }
 }

@@ -35,21 +35,13 @@ public class Boid : MonoBehaviour
 {
     public BoidSettings boidSettings;
     public Vector3 velocity;
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, boidSettings.separationRange);
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, boidSettings.alignmentRange);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, boidSettings.cohesionRange);
-    }
+    public bool debugViewEnabled;
 
     public void Initialize(Vector3 position, Quaternion rotation, BoidSettings boidSettings)
     {
         this.boidSettings = boidSettings;
         this.velocity = rotation * Vector3.forward * this.boidSettings.maxSpeed;
+        this.debugViewEnabled = false;
 
         transform.localScale *= this.boidSettings.boidScale;
     }
@@ -100,20 +92,29 @@ public class Boid : MonoBehaviour
         ClampBoidVelocity();
         UpdatePosition();
         UpdateRotation();
-
-        if (ReferenceEquals(transform.gameObject, boids[0].gameObject))
-        {
-            Debug.DrawCircle(transform.position, boidSettings.separationRange, 12, Color.red);
-            Debug.DrawCircle(transform.position, boidSettings.alignmentRange, 12, Color.green);
-            Debug.DrawCircle(transform.position, boidSettings.cohesionRange, 12, Color.cyan);
-        }
+        DrawDebugView();
     }
 
-    public void DrawDebugCircle()
+    public void ToggleDebugView()
     {
-        Debug.DrawCircle(transform.position, boidSettings.separationFactor, 12, Color.red);
-        Debug.DrawCircle(transform.position, boidSettings.alignmentFactor, 12, Color.green);
-        Debug.DrawCircle(transform.position, boidSettings.cohesionFactor, 12, Color.cyan);
+        debugViewEnabled = !debugViewEnabled;
+    }
+
+    public void DisableDebugView()
+    {
+        debugViewEnabled = false;
+    }
+
+    public void DrawDebugView()
+    {
+        if (!debugViewEnabled)
+        {
+            return;
+        }
+
+        Debug.DrawCircle(transform.position, boidSettings.separationRange, 24, Color.red);
+        Debug.DrawCircle(transform.position, boidSettings.alignmentRange, 24, Color.green);
+        Debug.DrawCircle(transform.position, boidSettings.cohesionRange, 24, Color.cyan);
     }
 
     public Vector3 Separation(List<Boid> boids)

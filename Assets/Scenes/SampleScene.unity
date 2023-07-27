@@ -467,8 +467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 738496c3eb2224a05a5df1e49c915a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapWidth: 18
-  mapHeight: 14
+  mapWidth: 10
+  mapHeight: 10
   startRadius: 5
   numberOfBoids: 32
   boidScale: 0.75
@@ -752,7 +752,7 @@ GameObject:
   - component: {fileID: 1060162304}
   - component: {fileID: 1060162303}
   - component: {fileID: 1060162302}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
