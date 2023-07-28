@@ -585,7 +585,7 @@ MonoBehaviour:
   startRadius: 4
   numberOfBoids: 32
   boidScale: 0.5
-  boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
+  boidPrefab: {fileID: 4308843329111450751, guid: a1f9a65caf7a0462d8b64bee37b9602c,
     type: 3}
   boids: []
   separationEnabled: 0
