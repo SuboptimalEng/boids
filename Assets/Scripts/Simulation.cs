@@ -21,6 +21,9 @@ public class Simulation : MonoBehaviour
     public float boidScale;
 
     public GameObject boidPrefab;
+    public Color boidColor;
+
+    [HideInInspector]
     public List<Boid> boids;
 
     [Header("Boid Behavior Flags")]
@@ -49,10 +52,10 @@ public class Simulation : MonoBehaviour
     public float cohesionFactor;
 
     [Header("Boid Speed Settings")]
-    [RangeWithStep(0, 5, 0.5f)]
+    [RangeWithStep(0, 10, 0.5f)]
     public float minSpeed;
 
-    [RangeWithStep(0, 5, 0.5f)]
+    [RangeWithStep(0, 10, 0.5f)]
     public float maxSpeed;
 
     [Range(0, 10)]
@@ -65,6 +68,7 @@ public class Simulation : MonoBehaviour
             // simulation settings
             mapHeight = mapHeight,
             mapWidth = mapWidth,
+            boidColor = boidColor,
             // flags for each phase
             separationEnabled = separationEnabled,
             alignmentEnabled = alignmentEnabled,
@@ -86,23 +90,6 @@ public class Simulation : MonoBehaviour
         return boidSettings;
     }
 
-    float RandomRangeWithStep(float min, float max, float step)
-    {
-        float steps = Mathf.Floor((max - min) / step);
-        int randomStepIndex = Random.Range(0, Mathf.FloorToInt(steps) + 1);
-        float randomValue = min + randomStepIndex * step;
-        return Mathf.Clamp(randomValue, min, max);
-    }
-
-    void RandomizeColor(GameObject gameObject)
-    {
-        Transform child = gameObject.transform.GetChild(0);
-        Renderer renderer = child.GetComponent<Renderer>();
-        Material material = renderer.material;
-        float r = RandomRangeWithStep(0.5f, 0.9f, 0.1f);
-        material.color = new Color(r, 0, 0, 1);
-    }
-
     public void CreateBoids()
     {
         boids = new List<Boid>();
@@ -118,7 +105,7 @@ public class Simulation : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0, angleDegrees, 0);
 
             GameObject gameObject = Instantiate(boidPrefab, position, rotation);
-            RandomizeColor(gameObject);
+            // RandomizeColor(gameObject);
 
             Boid b = gameObject.GetComponent<Boid>();
             BoidSettings boidSettings = CreateBoidSettings();
@@ -147,6 +134,7 @@ public class Simulation : MonoBehaviour
 
             b.boidSettings = updatedBoidSettings;
             b.UpdateLocalScale();
+            b.UpdateBoidColor();
         }
     }
 

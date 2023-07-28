@@ -8,6 +8,7 @@ public struct BoidSettings
     // simulation settings
     public int mapHeight;
     public int mapWidth;
+    public Color boidColor;
 
     // flags for each phase
     public bool separationEnabled;
@@ -43,6 +44,7 @@ public class Boid : MonoBehaviour
         this.velocity = rotation * Vector3.forward * this.boidSettings.maxSpeed;
         this.debugViewEnabled = false;
         this.UpdateLocalScale();
+        this.UpdateBoidColor();
     }
 
     public void UpdateLocalScale()
@@ -52,6 +54,23 @@ public class Boid : MonoBehaviour
             this.boidSettings.boidScale,
             this.boidSettings.boidScale
         );
+    }
+
+    float RandomRangeWithStep(float min, float max, float step)
+    {
+        float steps = Mathf.Floor((max - min) / step);
+        int randomStepIndex = Random.Range(0, Mathf.FloorToInt(steps) + 1);
+        float randomValue = min + randomStepIndex * step;
+        return Mathf.Clamp(randomValue, min, max);
+    }
+
+    public void UpdateBoidColor()
+    {
+        Transform child = gameObject.transform.GetChild(0);
+        Material material = child.GetComponent<Renderer>().material;
+        float colorMultiplier = RandomRangeWithStep(0.5f, 0.9f, 0.1f);
+        Color randomizedColor = boidSettings.boidColor * colorMultiplier;
+        material.color = randomizedColor;
     }
 
     void UpdateRotation()

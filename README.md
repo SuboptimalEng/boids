@@ -2,6 +2,22 @@
 
 Simulating boids.
 
+## Notes
+
+- completed:
+  - separation, alignment, cohesion for boid simulation
+  - script for updating simulation settings live
+  - debug view to show show range of each phase
+  - color picker and randomizer for each boid
+  - custom attribute `RangeWithStep` for floats
+  - script to allow camera movement in play mode
+- todo:
+  - group boids based on color
+  - follow objects and avoid edges
+  - trail for each boid's old positions
+  - partitioning system for boid detection
+  - implement algorithm in compute shader
+
 ## References
 
 - [Boids by Craig Reynolds](https://www.red3d.com/cwr/boids/)
