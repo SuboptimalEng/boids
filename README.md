@@ -12,6 +12,7 @@ Simulating boids.
   - custom attribute `RangeWithStep` for floats
   - script to allow camera movement in play mode
 - todo:
+  - simulate boids in 3d
   - group boids based on color
   - follow objects and avoid edges
   - trail for each boid's old positions
