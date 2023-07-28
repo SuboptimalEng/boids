@@ -146,6 +146,7 @@ public class Simulation : MonoBehaviour
             }
 
             b.boidSettings = updatedBoidSettings;
+            b.UpdateLocalScale();
         }
     }
 

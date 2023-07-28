@@ -42,8 +42,16 @@ public class Boid : MonoBehaviour
         this.boidSettings = boidSettings;
         this.velocity = rotation * Vector3.forward * this.boidSettings.maxSpeed;
         this.debugViewEnabled = false;
+        this.UpdateLocalScale();
+    }
 
-        transform.localScale *= this.boidSettings.boidScale;
+    public void UpdateLocalScale()
+    {
+        transform.localScale = new Vector3(
+            this.boidSettings.boidScale,
+            this.boidSettings.boidScale,
+            this.boidSettings.boidScale
+        );
     }
 
     void UpdateRotation()
