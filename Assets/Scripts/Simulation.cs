@@ -86,6 +86,23 @@ public class Simulation : MonoBehaviour
         return boidSettings;
     }
 
+    float RandomRangeWithStep(float min, float max, float step)
+    {
+        float steps = Mathf.Floor((max - min) / step);
+        int randomStepIndex = Random.Range(0, Mathf.FloorToInt(steps) + 1);
+        float randomValue = min + randomStepIndex * step;
+        return Mathf.Clamp(randomValue, min, max);
+    }
+
+    void RandomizeColor(GameObject gameObject)
+    {
+        Transform child = gameObject.transform.GetChild(0);
+        Renderer renderer = child.GetComponent<Renderer>();
+        Material material = renderer.material;
+        float r = RandomRangeWithStep(0.5f, 0.9f, 0.1f);
+        material.color = new Color(r, 0, 0, 1);
+    }
+
     public void CreateBoids()
     {
         boids = new List<Boid>();
@@ -101,6 +118,7 @@ public class Simulation : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0, angleDegrees, 0);
 
             GameObject gameObject = Instantiate(boidPrefab, position, rotation);
+            RandomizeColor(gameObject);
 
             Boid b = gameObject.GetComponent<Boid>();
             BoidSettings boidSettings = CreateBoidSettings();
