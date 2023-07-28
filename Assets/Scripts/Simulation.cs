@@ -14,10 +14,10 @@ public class Simulation : MonoBehaviour
     [Range(1, 10)]
     public int startRadius;
 
-    [Range(1, 64)]
+    [Range(1, 128)]
     public int numberOfBoids;
 
-    [RangeWithStep(0, 1, 0.25f)]
+    [RangeWithStep(0.5f, 1, 0.1f)]
     public float boidScale;
 
     public GameObject boidPrefab;
