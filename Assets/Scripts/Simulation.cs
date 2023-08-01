@@ -92,6 +92,8 @@ public class Simulation : MonoBehaviour
 
     public void CreateBoids()
     {
+        GameObject liveSimulation = new GameObject("Live Simulation");
+
         boids = new List<Boid>();
 
         for (int i = 0; i < numberOfBoids; i++)
@@ -105,7 +107,7 @@ public class Simulation : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0, angleDegrees, 0);
 
             GameObject gameObject = Instantiate(boidPrefab, position, rotation);
-            // RandomizeColor(gameObject);
+            gameObject.transform.SetParent(liveSimulation.transform);
 
             Boid b = gameObject.GetComponent<Boid>();
             BoidSettings boidSettings = CreateBoidSettings();
