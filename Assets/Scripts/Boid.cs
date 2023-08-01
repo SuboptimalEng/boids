@@ -129,6 +129,103 @@ public class Boid : MonoBehaviour
         DrawDebugView();
     }
 
+    public (Vector3, Vector3, Vector3) PerformThreeActions(List<Boid> boids)
+    {
+        Vector3 separationVelocity = Vector3.zero;
+        Vector3 alignmentVelocity = Vector3.zero;
+        Vector3 cohesionVelocity = Vector3.zero;
+
+        int numOfBoidsToAvoid = 0;
+        int numOfBoidsToAlignWith = 0;
+        int numOfBoidsInFlock = 0;
+        Vector3 currBoidPosition = transform.position;
+        // cohesion variable
+        Vector3 positionToMoveTowards = Vector3.zero;
+
+        foreach (Boid otherBoid in boids)
+        {
+            if (ReferenceEquals(gameObject, otherBoid.gameObject))
+            {
+                continue;
+            }
+
+            Vector3 otherBoidPosition = otherBoid.transform.position;
+            float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
+
+            // separation check
+            if (dist < boidSettings.separationRange)
+            {
+                Vector3 otherBoidToCurrBoid = currBoidPosition - otherBoidPosition;
+                Vector3 dirToTravel = otherBoidToCurrBoid.normalized;
+                dirToTravel /= dist;
+                separationVelocity += dirToTravel;
+                numOfBoidsToAvoid++;
+            }
+
+            // alignment check
+            if (dist < boidSettings.alignmentRange)
+            {
+                alignmentVelocity += otherBoid.velocity;
+                numOfBoidsToAlignWith++;
+            }
+
+            // cohesion check
+            if (dist < boidSettings.cohesionRange)
+            {
+                // keep track of the positions of all otherBoids that are in
+                // the currBoid's cohesionRange
+                positionToMoveTowards += otherBoidPosition;
+                numOfBoidsInFlock++;
+            }
+        }
+
+        if (numOfBoidsToAvoid != 0)
+        {
+            separationVelocity /= (float)numOfBoidsToAvoid;
+            separationVelocity *= boidSettings.separationFactor;
+        }
+
+        if (numOfBoidsToAlignWith != 0)
+        {
+            alignmentVelocity /= (float)numOfBoidsToAlignWith;
+            alignmentVelocity *= boidSettings.alignmentFactor;
+        }
+
+        if (numOfBoidsInFlock != 0)
+        {
+            positionToMoveTowards /= (float)numOfBoidsInFlock;
+            Vector3 cohesionDirection = positionToMoveTowards - currBoidPosition;
+            cohesionDirection.Normalize();
+            cohesionVelocity = cohesionDirection * boidSettings.cohesionFactor;
+        }
+
+        return (separationVelocity, alignmentVelocity, cohesionVelocity);
+    }
+
+    public void UpdateBoidV2(List<Boid> boids)
+    {
+        (Vector3 separationVelocity, Vector3 alignmentVelocity, Vector3 cohesionVelocity) =
+            PerformThreeActions(boids);
+
+        if (boidSettings.separationEnabled)
+        {
+            velocity += separationVelocity;
+        }
+        if (boidSettings.alignmentEnabled)
+        {
+            velocity += alignmentVelocity;
+        }
+        if (boidSettings.cohesionEnabled)
+        {
+            velocity += cohesionVelocity;
+        }
+
+        ClampBoidVelocity();
+        UpdatePosition();
+        UpdateRotation();
+        DrawDebugView();
+    }
+
     public void ToggleDebugView()
     {
         debugViewEnabled = !debugViewEnabled;
