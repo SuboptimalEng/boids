@@ -32,13 +32,13 @@ public class Simulation : MonoBehaviour
     public bool cohesionEnabled;
 
     [Header("Boid Behavior Range")]
-    [RangeWithStep(0, 5, 0.5f)]
+    [RangeWithStep(0, 4, 0.5f)]
     public float separationRange;
 
-    [RangeWithStep(0, 5, 0.5f)]
+    [RangeWithStep(0, 4, 0.5f)]
     public float alignmentRange;
 
-    [RangeWithStep(0, 5, 0.5f)]
+    [RangeWithStep(0, 4, 0.5f)]
     public float cohesionRange;
 
     [Header("Boid Behavior Weights")]
@@ -159,7 +159,10 @@ public class Simulation : MonoBehaviour
             {
                 GameObject boidGameObject = hit.collider.gameObject;
                 Boid b = boidGameObject.GetComponent<Boid>();
-                b.ToggleDebugView();
+                if (b != null)
+                {
+                    b.ToggleDebugView();
+                }
             }
         }
 
