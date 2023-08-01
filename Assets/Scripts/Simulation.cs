@@ -17,7 +17,7 @@ public class Simulation : MonoBehaviour
     [Range(1, 384)]
     public int numberOfBoids;
 
-    [RangeWithStep(0.5f, 1, 0.1f)]
+    [RangeWithStep(0.5f, 1.5f, 0.1f)]
     public float boidScale;
 
     public GameObject boidPrefab;
@@ -52,10 +52,10 @@ public class Simulation : MonoBehaviour
     public float cohesionFactor;
 
     [Header("Boid Speed Settings")]
-    [RangeWithStep(0, 10, 0.5f)]
+    [RangeWithStep(0, 5, 0.25f)]
     public float minSpeed;
 
-    [RangeWithStep(0, 10, 0.5f)]
+    [RangeWithStep(0, 5, 0.25f)]
     public float maxSpeed;
 
     [Range(0, 10)]
