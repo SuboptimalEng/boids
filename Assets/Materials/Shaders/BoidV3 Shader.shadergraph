@@ -134,8 +134,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 0.0,
-            "y": 0.0
+            "x": 413.00006103515627,
+            "y": -124.00004577636719
         },
         "m_Blocks": [
             {
@@ -151,8 +151,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 0.0,
-            "y": 200.0
+            "x": 413.00006103515627,
+            "y": 76.00000762939453
         },
         "m_Blocks": [
             {
@@ -311,7 +311,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Height",
     "m_StageCapability": 3,
-    "m_Value": 0.1875,
+    "m_Value": 0.75,
     "m_DefaultValue": 0.5,
     "m_Labels": []
 }
@@ -400,9 +400,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1173.0,
-            "y": 54.99998092651367,
-            "width": 207.99993896484376,
+            "x": -559.0,
+            "y": 76.00003814697266,
+            "width": 208.0,
             "height": 326.0
         }
     },
@@ -444,10 +444,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -871.0,
-            "y": 84.0,
+            "x": -250.00003051757813,
+            "y": 76.00003814697266,
             "width": 208.0,
-            "height": 349.9999694824219
+            "height": 350.0
         }
     },
     "m_Slots": [
@@ -619,10 +619,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -835.0000610351563,
-            "y": 534.0,
-            "width": 129.00006103515626,
-            "height": 34.00006103515625
+            "x": -105.99998474121094,
+            "y": 531.0000610351563,
+            "width": 129.00003051757813,
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -942,10 +942,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -613.9999389648438,
-            "y": 412.0,
+            "x": 43.99999237060547,
+            "y": 76.00003814697266,
             "width": 208.0,
-            "height": 302.0
+            "height": 302.0000305175781
         }
     },
     "m_Slots": [
@@ -1110,7 +1110,7 @@
     "m_StageCapability": 3,
     "m_Value": {
         "x": 0.0,
-        "y": 0.019999999552965165
+        "y": 0.10000000149011612
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -1255,7 +1255,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Width",
     "m_StageCapability": 3,
-    "m_Value": 0.125,
+    "m_Value": 0.5,
     "m_DefaultValue": 0.5,
     "m_Labels": []
 }

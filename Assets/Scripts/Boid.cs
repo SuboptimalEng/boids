@@ -66,7 +66,7 @@ public class Boid : MonoBehaviour
 
     Color GetRandomizedColor()
     {
-        float colorMultiplier = RandomRangeWithStep(0.6f, 1.0f, 0.1f);
+        float colorMultiplier = RandomRangeWithStep(0.7f, 1.0f, 0.1f);
         Color randomizedColor = boidSettings.boidColor * colorMultiplier;
         return randomizedColor;
     }
