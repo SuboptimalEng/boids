@@ -11,13 +11,17 @@ Simulating boids.
   - color picker and randomizer for each boid
   - custom attribute `RangeWithStep` for floats
   - script to allow camera movement in play mode
+  - multiple boid prefabs (sphere, cube, triangle shader)
 - todo:
-  - simulate boids in 3d
-  - group boids based on color
-  - follow objects and avoid edges
-  - trail for each boid's old positions
+  - implement simulation algorithm in a compute shader
+- research:
+  - interactable grass
+  - simulating boids in 3D
+  - grouping boids based on color
+  - following objects and avoiding edges
   - partitioning system for boid detection
-  - implement algorithm in compute shader
+  - how to create a debug view in shader
+  - adding a trail for each boid
 
 ## References
 
