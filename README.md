@@ -20,6 +20,7 @@ Simulating boids.
   - grouping boids based on color
   - following objects and avoiding edges
   - partitioning system for boid detection
+  - visualize all boids in a single shader
   - how to create a debug view in shader
   - adding a trail for each boid
 
