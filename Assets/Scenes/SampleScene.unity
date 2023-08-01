@@ -606,7 +606,7 @@ MonoBehaviour:
   startRadius: 5
   numberOfBoids: 320
   boidScale: 0.5
-  boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
+  boidPrefab: {fileID: 4308843329111450751, guid: 75c96cdbece6040a59e1511bd449cccf,
     type: 3}
   boidColor: {r: 0.9622642, g: 0.07493969, b: 0.013616921, a: 1}
   boids: []
