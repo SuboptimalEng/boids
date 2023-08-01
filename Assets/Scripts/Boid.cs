@@ -66,7 +66,7 @@ public class Boid : MonoBehaviour
 
     Color GetRandomizedColor()
     {
-        float colorMultiplier = RandomRangeWithStep(0.7f, 1.0f, 0.1f);
+        float colorMultiplier = RandomRangeWithStep(0.7f, 0.9f, 0.05f);
         Color randomizedColor = boidSettings.boidColor * colorMultiplier;
         return randomizedColor;
     }
@@ -77,7 +77,7 @@ public class Boid : MonoBehaviour
         Transform child = gameObject.transform.GetChild(0);
         Material material = child.GetComponent<Renderer>().material;
         material.SetColor("_BoidColor", randomizedColor);
-        // material.color = randomizedColor;
+        material.color = randomizedColor;
     }
 
     void UpdateRotation()
