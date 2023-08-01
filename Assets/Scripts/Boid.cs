@@ -64,13 +64,20 @@ public class Boid : MonoBehaviour
         return Mathf.Clamp(randomValue, min, max);
     }
 
-    public void UpdateBoidColor()
+    Color GetRandomizedColor()
     {
-        Transform child = gameObject.transform.GetChild(0);
-        Material material = child.GetComponent<Renderer>().material;
         float colorMultiplier = RandomRangeWithStep(0.5f, 0.9f, 0.1f);
         Color randomizedColor = boidSettings.boidColor * colorMultiplier;
-        material.color = randomizedColor;
+        return randomizedColor;
+    }
+
+    public void UpdateBoidColor()
+    {
+        Color randomizedColor = GetRandomizedColor();
+        Transform child = gameObject.transform.GetChild(0);
+        Material material = child.GetComponent<Renderer>().material;
+        material.SetColor("_BoidColor", randomizedColor);
+        // material.color = randomizedColor;
     }
 
     void UpdateRotation()

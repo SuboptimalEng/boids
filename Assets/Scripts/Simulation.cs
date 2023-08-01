@@ -14,7 +14,7 @@ public class Simulation : MonoBehaviour
     [Range(1, 10)]
     public int startRadius;
 
-    [Range(1, 128)]
+    [Range(1, 256)]
     public int numberOfBoids;
 
     [RangeWithStep(0.5f, 1, 0.1f)]
