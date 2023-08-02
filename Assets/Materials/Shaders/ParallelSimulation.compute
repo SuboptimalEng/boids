@@ -1,0 +1,99 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+struct BoidCompute
+{
+    float3 velocity;
+    float3 position;
+    float3 separationVelocity;
+    float3 alignmentVelocity;
+    float3 cohesionVelocity;
+};
+
+RWStructuredBuffer<BoidCompute> boids;
+
+int numberOfBoids;
+float separationRange;
+float alignmentRange;
+float cohesionRange;
+float separationFactor;
+float alignmentFactor;
+float cohesionFactor;
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+// RWTexture2D<float4> Result;
+
+[numthreads(128,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float3 currBoidPosition = boids[id.x].position;
+
+    // TODO: insert actual code here!
+    // Result[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+    int numOfBoidsToAvoid = 0;
+    int numOfBoidsToAlignWith = 0;
+    int numOfBoidsInFlock = 0;
+
+    // cohesion variable
+    float3 positionToMoveTowards = float3(0, 0, 0);
+
+    for (int indexB = 0; indexB < numberOfBoids; indexB++) {
+        if (id.x == indexB) {
+            continue;
+        }
+
+        BoidCompute otherBoid = boids[indexB];
+
+        float3 otherBoidPosition = otherBoid.position;
+        float dist = distance(currBoidPosition, otherBoidPosition);
+
+        // separation check
+        if (dist < separationRange)
+        {
+            float3 otherBoidToCurrBoid = currBoidPosition - otherBoidPosition;
+            float3 dirToTravel = normalize(otherBoidToCurrBoid);
+            dirToTravel /= dist;
+            boids[id.x].separationVelocity += dirToTravel;
+            numOfBoidsToAvoid++;
+        }
+
+        // alignment check
+        if (dist < alignmentRange)
+        {
+            boids[id.x].alignmentVelocity += otherBoid.velocity;
+            numOfBoidsToAlignWith++;
+        }
+
+        // cohesion check
+        if (dist < cohesionRange)
+        {
+            // keep track of the positions of all otherBoids that are in
+            // the currBoid's cohesionRange
+            positionToMoveTowards += otherBoidPosition;
+            numOfBoidsInFlock++;
+        }
+
+
+    }
+
+    if (numOfBoidsToAvoid != 0)
+    {
+        boids[id.x].separationVelocity /= (float)numOfBoidsToAvoid;
+        boids[id.x].separationVelocity *= separationFactor;
+    }
+
+    if (numOfBoidsToAlignWith != 0)
+    {
+        boids[id.x].alignmentVelocity /= (float)numOfBoidsToAlignWith;
+        boids[id.x].alignmentVelocity *= alignmentFactor;
+    }
+
+    if (numOfBoidsInFlock != 0)
+    {
+        positionToMoveTowards /= (float)numOfBoidsInFlock;
+        float3 cohesionDirection = positionToMoveTowards - currBoidPosition;
+        cohesionDirection = normalize(cohesionDirection);
+        boids[id.x].cohesionVelocity = cohesionDirection * cohesionFactor;
+    }
+}

@@ -32,6 +32,20 @@ public struct BoidSettings
     public int rotationSpeed;
 }
 
+public struct BoidCompute
+{
+    public Vector3 velocity;
+    public Vector3 position;
+    public Vector3 separationVelocity;
+    public Vector3 alignmentVelocity;
+    public Vector3 cohesionVelocity;
+
+    public static int Size
+    {
+        get { return sizeof(float) * 3 * 5; }
+    }
+}
+
 public class Boid : MonoBehaviour
 {
     public BoidSettings boidSettings;
@@ -45,6 +59,18 @@ public class Boid : MonoBehaviour
         this.debugViewEnabled = false;
         this.UpdateLocalScale();
         this.UpdateBoidColor();
+    }
+
+    public BoidCompute GetComputeShaderData()
+    {
+        return new BoidCompute
+        {
+            velocity = this.velocity,
+            position = transform.position,
+            separationVelocity = Vector3.zero,
+            alignmentVelocity = Vector3.zero,
+            cohesionVelocity = Vector3.zero,
+        };
     }
 
     public void UpdateLocalScale()
@@ -207,6 +233,31 @@ public class Boid : MonoBehaviour
         (Vector3 separationVelocity, Vector3 alignmentVelocity, Vector3 cohesionVelocity) =
             PerformThreeActions(boids);
 
+        if (boidSettings.separationEnabled)
+        {
+            velocity += separationVelocity;
+        }
+        if (boidSettings.alignmentEnabled)
+        {
+            velocity += alignmentVelocity;
+        }
+        if (boidSettings.cohesionEnabled)
+        {
+            velocity += cohesionVelocity;
+        }
+
+        ClampBoidVelocity();
+        UpdatePosition();
+        UpdateRotation();
+        DrawDebugView();
+    }
+
+    public void UpdateBoidV3(
+        Vector3 separationVelocity,
+        Vector3 alignmentVelocity,
+        Vector3 cohesionVelocity
+    )
+    {
         if (boidSettings.separationEnabled)
         {
             velocity += separationVelocity;

@@ -14,7 +14,7 @@ public class Simulation : MonoBehaviour
     [Range(1, 10)]
     public int startRadius;
 
-    [Range(1, 384)]
+    [Range(1, 4000)]
     public int numberOfBoids;
 
     [RangeWithStep(0.5f, 1.5f, 0.1f)]
@@ -60,6 +60,8 @@ public class Simulation : MonoBehaviour
 
     [Range(0, 10)]
     public int rotationSpeed;
+
+    public ComputeShader compute;
 
     BoidSettings CreateBoidSettings()
     {
@@ -144,10 +146,44 @@ public class Simulation : MonoBehaviour
     {
         CheckForUserInput();
 
-        foreach (Boid b in boids)
+        // note: set up compute shader data
+        BoidCompute[] boidData = new BoidCompute[numberOfBoids];
+        for (int i = 0; i < boids.Count; i++)
         {
-            b.UpdateBoidV2(boids);
+            boidData[i] = boids[i].GetComputeShaderData();
         }
+        ComputeBuffer boidBuffer = new ComputeBuffer(numberOfBoids, BoidCompute.Size);
+        boidBuffer.SetData(boidData);
+        compute.SetBuffer(0, "boids", boidBuffer);
+        compute.SetInt("numberOfBoids", boids.Count);
+        compute.SetFloat("separationRange", separationRange);
+        compute.SetFloat("alignmentRange", alignmentRange);
+        compute.SetFloat("cohesionRange", cohesionRange);
+        compute.SetFloat("separationFactor", separationFactor);
+        compute.SetFloat("alignmentFactor", alignmentFactor);
+        compute.SetFloat("cohesionFactor", cohesionFactor);
+
+        // note: run compute shader
+        // todo: change this?
+        // int threadGroupSize = 1024;
+        // int threadGroups = Mathf.CeilToInt(numberOfBoids / (float)threadGroupSize);
+        // compute.Dispatch(0, threadGroups, 1, 1);
+        // compute.Dispatch(0, numberOfBoids, 1, 1);
+        compute.Dispatch(0, 128, 1, 1);
+        boidBuffer.GetData(boidData);
+
+        for (int i = 0; i < boids.Count; i++)
+        {
+            // boids[i].UpdateBoid(boids);
+            // boids[i].UpdateBoidV2(boids);
+            boids[i].UpdateBoidV3(
+                boidData[i].separationVelocity,
+                boidData[i].alignmentVelocity,
+                boidData[i].cohesionVelocity
+            );
+        }
+
+        boidBuffer.Release();
     }
 
     void CheckForUserInput()

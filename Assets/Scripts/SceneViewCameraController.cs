@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SceneViewCameraController : MonoBehaviour
 {
-    [RangeWithStep(0, 1, 0.1f)]
+    [RangeWithStep(0, 0.5f, 0.05f)]
     public float dragSpeed;
 
     [RangeWithStep(1, 5, 1)]
