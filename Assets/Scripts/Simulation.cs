@@ -57,7 +57,7 @@ public class Simulation : MonoBehaviour
     [RangeWithStep(0, 1, 0.1f)]
     public float alignmentFactor;
 
-    [RangeWithStep(0, 0.2f, 0.01f)]
+    [RangeWithStep(0, 0.2f, 0.02f)]
     public float cohesionFactor;
 
     [Header("Boid Speed Settings")]

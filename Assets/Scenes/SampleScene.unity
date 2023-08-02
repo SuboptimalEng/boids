@@ -604,12 +604,12 @@ MonoBehaviour:
   mapHeight: 9.5
   mapWidth: 9.5
   startRadius: 5
-  numberOfBoids: 1000
+  numberOfBoids: 300
   boidScale: 0.5
   boidPrefab: {fileID: 4308843329111450751, guid: 75c96cdbece6040a59e1511bd449cccf,
     type: 3}
   boidColor: {r: 1, g: 0, b: 0, a: 1}
-  simulationType: 2
+  simulationType: 1
   boids: []
   separationEnabled: 1
   alignmentEnabled: 1
@@ -617,9 +617,9 @@ MonoBehaviour:
   separationRange: 1
   alignmentRange: 2
   cohesionRange: 3
-  separationFactor: 0
-  alignmentFactor: 0
-  cohesionFactor: 0
+  separationFactor: 0.1
+  alignmentFactor: 0.1
+  cohesionFactor: 0.1
   minSpeed: 0.5
   maxSpeed: 1.5
   rotationSpeed: 10
@@ -866,7 +866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &832575518
 MonoBehaviour:
   m_ObjectHideFlags: 0
