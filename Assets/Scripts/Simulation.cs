@@ -23,6 +23,15 @@ public class Simulation : MonoBehaviour
     public GameObject boidPrefab;
     public Color boidColor;
 
+    public enum SimulationType
+    {
+        v1Unoptimized,
+        v2Optimized,
+        v3Compute,
+    }
+
+    public SimulationType simulationType;
+
     [HideInInspector]
     public List<Boid> boids;
 
@@ -145,7 +154,38 @@ public class Simulation : MonoBehaviour
     void Update()
     {
         CheckForUserInput();
+        if (simulationType == SimulationType.v1Unoptimized)
+        {
+            RunBoidUpdateV1();
+        }
+        else if (simulationType == SimulationType.v2Optimized)
+        {
+            RunBoidUpdateV2();
+        }
+        else if (simulationType == SimulationType.v3Compute)
+        {
+            RunBoidUpdateV3();
+        }
+    }
 
+    void RunBoidUpdateV1()
+    {
+        for (int i = 0; i < boids.Count; i++)
+        {
+            boids[i].UpdateBoidV1(boids);
+        }
+    }
+
+    void RunBoidUpdateV2()
+    {
+        for (int i = 0; i < boids.Count; i++)
+        {
+            boids[i].UpdateBoidV2(boids);
+        }
+    }
+
+    void RunBoidUpdateV3()
+    {
         // note: set up compute shader data
         BoidCompute[] boidData = new BoidCompute[numberOfBoids];
         for (int i = 0; i < boids.Count; i++)
@@ -174,8 +214,6 @@ public class Simulation : MonoBehaviour
 
         for (int i = 0; i < boids.Count; i++)
         {
-            // boids[i].UpdateBoid(boids);
-            // boids[i].UpdateBoidV2(boids);
             boids[i].UpdateBoidV3(
                 boidData[i].separationVelocity,
                 boidData[i].alignmentVelocity,

@@ -116,7 +116,7 @@ public class Boid : MonoBehaviour
         );
     }
 
-    public void UpdateBoid(List<Boid> boids)
+    public void UpdateBoidV1(List<Boid> boids)
     {
         // this vector represents the cumulative direction the
         // currBoid should take if it wants to avoid otherBoids
