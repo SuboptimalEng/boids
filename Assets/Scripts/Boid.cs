@@ -6,8 +6,8 @@ using UnityEditor;
 public struct BoidSettings
 {
     // simulation settings
-    public int mapHeight;
-    public int mapWidth;
+    public float mapHeight;
+    public float mapWidth;
     public Color boidColor;
 
     // flags for each phase

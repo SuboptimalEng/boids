@@ -5,11 +5,11 @@ using UnityEngine;
 public class Simulation : MonoBehaviour
 {
     [Header("Simulation Settings")]
-    [Range(1, 15)]
-    public int mapHeight;
+    [RangeWithStep(5, 15, 0.5f)]
+    public float mapHeight;
 
-    [Range(1, 15)]
-    public int mapWidth;
+    [RangeWithStep(5, 15, 0.5f)]
+    public float mapWidth;
 
     [Range(1, 10)]
     public int startRadius;
@@ -41,13 +41,13 @@ public class Simulation : MonoBehaviour
     public bool cohesionEnabled;
 
     [Header("Boid Behavior Range")]
-    [RangeWithStep(0, 4, 0.5f)]
+    [RangeWithStep(0, 3, 0.5f)]
     public float separationRange;
 
-    [RangeWithStep(0, 4, 0.5f)]
+    [RangeWithStep(0, 3, 0.5f)]
     public float alignmentRange;
 
-    [RangeWithStep(0, 4, 0.5f)]
+    [RangeWithStep(0, 3, 0.5f)]
     public float cohesionRange;
 
     [Header("Boid Behavior Weights")]
@@ -57,7 +57,7 @@ public class Simulation : MonoBehaviour
     [RangeWithStep(0, 1, 0.1f)]
     public float alignmentFactor;
 
-    [RangeWithStep(0, 1, 0.1f)]
+    [RangeWithStep(0, 0.2f, 0.01f)]
     public float cohesionFactor;
 
     [Header("Boid Speed Settings")]
