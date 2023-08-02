@@ -521,7 +521,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -604,12 +604,12 @@ MonoBehaviour:
   mapHeight: 9
   mapWidth: 14
   startRadius: 5
-  numberOfBoids: 320
+  numberOfBoids: 1000
   boidScale: 0.5
   boidPrefab: {fileID: 4308843329111450751, guid: 75c96cdbece6040a59e1511bd449cccf,
     type: 3}
-  boidColor: {r: 0.9622642, g: 0.07493969, b: 0.013616921, a: 1}
-  simulationType: 1
+  boidColor: {r: 1, g: 0, b: 0, a: 1}
+  simulationType: 2
   boids: []
   separationEnabled: 1
   alignmentEnabled: 1
@@ -866,7 +866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &832575518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,12 +892,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832575517}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &983803389
 PrefabInstance:

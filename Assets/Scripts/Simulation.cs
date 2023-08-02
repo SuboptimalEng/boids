@@ -17,7 +17,7 @@ public class Simulation : MonoBehaviour
     [Range(1, 4000)]
     public int numberOfBoids;
 
-    [RangeWithStep(0.5f, 1.5f, 0.1f)]
+    [RangeWithStep(0.1f, 1.0f, 0.1f)]
     public float boidScale;
 
     public GameObject boidPrefab;
