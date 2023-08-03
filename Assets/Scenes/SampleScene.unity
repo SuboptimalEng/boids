@@ -614,9 +614,9 @@ MonoBehaviour:
   separationRange: 1
   alignmentRange: 2
   cohesionRange: 3
-  separationFactor: 0.1
-  alignmentFactor: 0.1
-  cohesionFactor: 0.1
+  separationFactor: 0
+  alignmentFactor: 0
+  cohesionFactor: 0
   minSpeed: 0.5
   maxSpeed: 1.5
   rotationSpeed: 10
