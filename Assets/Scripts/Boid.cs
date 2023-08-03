@@ -10,11 +10,6 @@ public struct BoidSettings
     public float mapWidth;
     public Color boidColor;
 
-    // flags for each phase
-    public bool separationEnabled;
-    public bool alignmentEnabled;
-    public bool cohesionEnabled;
-
     // boid behavior range
     public float separationRange;
     public float alignmentRange;
@@ -116,6 +111,22 @@ public class Boid : MonoBehaviour
         );
     }
 
+    // public void UpdateBoidV0(List<Boid> boids)
+    // {
+    //     Vector3 separationVelocity = Separation(boids);
+    //     Vector3 alignmentVelocity = Alignment(boids);
+    //     Vector3 cohesionVelocity = Cohesion(boids);
+
+    //     velocity += separationVelocity;
+    //     velocity += alignmentVelocity;
+    //     velocity += cohesionVelocity;
+
+    //     ClampBoidVelocity();
+    //     UpdatePosition();
+    //     UpdateRotation();
+    //     DrawDebugView();
+    // }
+
     public void UpdateBoidV1(List<Boid> boids)
     {
         // this vector represents the cumulative direction the
@@ -132,22 +143,9 @@ public class Boid : MonoBehaviour
         // center of its flock mates
         Vector3 cohesionVelocity = Cohesion(boids);
 
-        // velocity += separationVelocity;
-        // velocity += alignmentVelocity;
-        // velocity += cohesionVelocity;
-
-        if (boidSettings.separationEnabled)
-        {
-            velocity += separationVelocity;
-        }
-        if (boidSettings.alignmentEnabled)
-        {
-            velocity += alignmentVelocity;
-        }
-        if (boidSettings.cohesionEnabled)
-        {
-            velocity += cohesionVelocity;
-        }
+        velocity += separationVelocity;
+        velocity += alignmentVelocity;
+        velocity += cohesionVelocity;
 
         ClampBoidVelocity();
         UpdatePosition();
@@ -233,18 +231,9 @@ public class Boid : MonoBehaviour
         (Vector3 separationVelocity, Vector3 alignmentVelocity, Vector3 cohesionVelocity) =
             PerformThreeActions(boids);
 
-        if (boidSettings.separationEnabled)
-        {
-            velocity += separationVelocity;
-        }
-        if (boidSettings.alignmentEnabled)
-        {
-            velocity += alignmentVelocity;
-        }
-        if (boidSettings.cohesionEnabled)
-        {
-            velocity += cohesionVelocity;
-        }
+        velocity += separationVelocity;
+        velocity += alignmentVelocity;
+        velocity += cohesionVelocity;
 
         ClampBoidVelocity();
         UpdatePosition();
@@ -258,18 +247,9 @@ public class Boid : MonoBehaviour
         Vector3 cohesionVelocity
     )
     {
-        if (boidSettings.separationEnabled)
-        {
-            velocity += separationVelocity;
-        }
-        if (boidSettings.alignmentEnabled)
-        {
-            velocity += alignmentVelocity;
-        }
-        if (boidSettings.cohesionEnabled)
-        {
-            velocity += cohesionVelocity;
-        }
+        velocity += separationVelocity;
+        velocity += alignmentVelocity;
+        velocity += cohesionVelocity;
 
         ClampBoidVelocity();
         UpdatePosition();
@@ -298,6 +278,39 @@ public class Boid : MonoBehaviour
         Debug.DrawCircle(transform.position, boidSettings.alignmentRange, 24, Color.green);
         Debug.DrawCircle(transform.position, boidSettings.cohesionRange, 24, Color.cyan);
     }
+
+    // public Vector3 SeparationV0(List<Boid> boids)
+    // {
+    //     int numOfBoidsToAvoid = 0;
+    //     Vector3 separationVelocity = Vector3.zero;
+    //     Vector3 currBoidPosition = transform.position;
+
+    //     foreach (Boid otherBoid in boids)
+    //     {
+    //         if (ReferenceEquals(gameObject, otherBoid.gameObject))
+    //         {
+    //             continue;
+    //         }
+    //         Vector3 otherBoidPosition = otherBoid.transform.position;
+    //         float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
+    //         if (dist < boidSettings.separationRange)
+    //         {
+    //             Vector3 otherBoidToCurrBoid = currBoidPosition - otherBoidPosition;
+    //             Vector3 dirToTravel = otherBoidToCurrBoid.normalized;
+    //             Vector3 weightedVelocity = dirToTravel / dist;
+    //             separationVelocity += weightedVelocity;
+    //             numOfBoidsToAvoid++;
+    //         }
+    //     }
+
+    //     if (numOfBoidsToAvoid > 0)
+    //     {
+    //         separationVelocity /= (float)numOfBoidsToAvoid;
+    //         separationVelocity *= boidSettings.separationFactor;
+    //     }
+
+    //     return separationVelocity;
+    // }
 
     public Vector3 Separation(List<Boid> boids)
     {

@@ -35,11 +35,6 @@ public class Simulation : MonoBehaviour
     [HideInInspector]
     public List<Boid> boids;
 
-    [Header("Boid Behavior Flags")]
-    public bool separationEnabled;
-    public bool alignmentEnabled;
-    public bool cohesionEnabled;
-
     [Header("Boid Behavior Range")]
     [RangeWithStep(0, 3, 0.5f)]
     public float separationRange;
@@ -80,10 +75,6 @@ public class Simulation : MonoBehaviour
             mapHeight = mapHeight,
             mapWidth = mapWidth,
             boidColor = boidColor,
-            // flags for each phase
-            separationEnabled = separationEnabled,
-            alignmentEnabled = alignmentEnabled,
-            cohesionEnabled = cohesionEnabled,
             // boid behavior range
             separationRange = separationRange,
             alignmentRange = alignmentRange,
