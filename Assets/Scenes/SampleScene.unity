@@ -606,14 +606,11 @@ MonoBehaviour:
   startRadius: 5
   numberOfBoids: 300
   boidScale: 0.5
-  boidPrefab: {fileID: 4308843329111450751, guid: 75c96cdbece6040a59e1511bd449cccf,
+  boidPrefab: {fileID: 4308843329111450751, guid: 69c384a61ed9a446a93831e34e8e5da4,
     type: 3}
   boidColor: {r: 1, g: 0, b: 0, a: 1}
   simulationType: 1
   boids: []
-  separationEnabled: 1
-  alignmentEnabled: 1
-  cohesionEnabled: 1
   separationRange: 1
   alignmentRange: 2
   cohesionRange: 3
