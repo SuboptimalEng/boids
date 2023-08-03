@@ -153,6 +153,69 @@ public class Boid : MonoBehaviour
         DrawDebugView();
     }
 
+    // public (Vector3, Vector3, Vector3) PerformThreeActionsV0(List<Boid> boids)
+    // {
+    //     Vector3 separationVelocity = Vector3.zero;
+    //     Vector3 alignmentVelocity = Vector3.zero;
+    //     Vector3 cohesionVelocity = Vector3.zero;
+    //     int numOfBoidsToAvoid = 0;
+    //     int numOfBoidsToAlignWith = 0;
+    //     int numOfBoidsInFlock = 0;
+    //     Vector3 currBoidPosition = transform.position;
+    //     Vector3 positionToMoveTowards = Vector3.zero;
+    //     foreach (Boid otherBoid in boids)
+    //     {
+    //         if (ReferenceEquals(gameObject, otherBoid.gameObject))
+    //         {
+    //             continue;
+    //         }
+    //         Vector3 otherBoidPosition = otherBoid.transform.position;
+    //         float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
+    //         // separation check
+    //         if (dist < boidSettings.separationRange)
+    //         {
+    //             Vector3 otherBoidToCurrBoid = currBoidPosition - otherBoidPosition;
+    //             Vector3 dirToTravel = otherBoidToCurrBoid.normalized;
+    //             dirToTravel /= dist;
+    //             separationVelocity += dirToTravel;
+    //             numOfBoidsToAvoid++;
+    //         }
+    //         // alignment check
+    //         if (dist < boidSettings.alignmentRange)
+    //         {
+    //             alignmentVelocity += otherBoid.velocity;
+    //             numOfBoidsToAlignWith++;
+    //         }
+    //         // cohesion check
+    //         if (dist < boidSettings.cohesionRange)
+    //         {
+    //             positionToMoveTowards += otherBoidPosition;
+    //             numOfBoidsInFlock++;
+    //         }
+    //     }
+    //     // separation check
+    //     if (numOfBoidsToAvoid != 0)
+    //     {
+    //         separationVelocity /= (float)numOfBoidsToAvoid;
+    //         separationVelocity *= boidSettings.separationFactor;
+    //     }
+    //     // alignment check
+    //     if (numOfBoidsToAlignWith != 0)
+    //     {
+    //         alignmentVelocity /= (float)numOfBoidsToAlignWith;
+    //         alignmentVelocity *= boidSettings.alignmentFactor;
+    //     }
+    //     // cohesion check
+    //     if (numOfBoidsInFlock != 0)
+    //     {
+    //         positionToMoveTowards /= (float)numOfBoidsInFlock;
+    //         Vector3 cohesionDirection = positionToMoveTowards - currBoidPosition;
+    //         cohesionDirection.Normalize();
+    //         cohesionVelocity = cohesionDirection * boidSettings.cohesionFactor;
+    //     }
+    //     return (separationVelocity, alignmentVelocity, cohesionVelocity);
+    // }
+
     public (Vector3, Vector3, Vector3) PerformThreeActions(List<Boid> boids)
     {
         Vector3 separationVelocity = Vector3.zero;
@@ -367,36 +430,32 @@ public class Boid : MonoBehaviour
         return separationVelocity;
     }
 
-    Vector3 AlignmentV0(List<Boid> boids)
-    {
-        int numOfBoidsToAlignWith = 0;
-        Vector3 alignmentVelocity = Vector3.zero;
-        Vector3 currBoidPosition = transform.position;
-
-        foreach (Boid otherBoid in boids)
-        {
-            if (ReferenceEquals(gameObject, otherBoid.gameObject))
-            {
-                continue;
-            }
-
-            Vector3 otherBoidPosition = otherBoid.transform.position;
-            float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
-            if (dist < boidSettings.alignmentRange)
-            {
-                alignmentVelocity += otherBoid.velocity;
-                numOfBoidsToAlignWith++;
-            }
-        }
-
-        if (numOfBoidsToAlignWith > 0)
-        {
-            alignmentVelocity /= (float)numOfBoidsToAlignWith;
-            alignmentVelocity *= boidSettings.alignmentFactor;
-        }
-
-        return alignmentVelocity;
-    }
+    // Vector3 AlignmentV0(List<Boid> boids)
+    // {
+    //     int numOfBoidsToAlignWith = 0;
+    //     Vector3 alignmentVelocity = Vector3.zero;
+    //     Vector3 currBoidPosition = transform.position;
+    //     foreach (Boid otherBoid in boids)
+    //     {
+    //         if (ReferenceEquals(gameObject, otherBoid.gameObject))
+    //         {
+    //             continue;
+    //         }
+    //         Vector3 otherBoidPosition = otherBoid.transform.position;
+    //         float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
+    //         if (dist < boidSettings.alignmentRange)
+    //         {
+    //             alignmentVelocity += otherBoid.velocity;
+    //             numOfBoidsToAlignWith++;
+    //         }
+    //     }
+    //     if (numOfBoidsToAlignWith > 0)
+    //     {
+    //         alignmentVelocity /= (float)numOfBoidsToAlignWith;
+    //         alignmentVelocity *= boidSettings.alignmentFactor;
+    //     }
+    //     return alignmentVelocity;
+    // }
 
     Vector3 Alignment(List<Boid> boids)
     {
@@ -438,6 +497,37 @@ public class Boid : MonoBehaviour
         alignmentVelocity *= boidSettings.alignmentFactor;
         return alignmentVelocity;
     }
+
+    // Vector3 CohesionV0(List<Boid> boids)
+    // {
+    //     int numOfBoidsInFlock = 0;
+    //     Vector3 cohesionVelocity = Vector3.zero;
+    //     Vector3 positionToMoveTowards = Vector3.zero;
+    //     Vector3 currBoidPosition = transform.position;
+    //     foreach (Boid otherBoid in boids)
+    //     {
+    //         if (ReferenceEquals(gameObject, otherBoid.gameObject))
+    //         {
+    //             continue;
+    //         }
+    //         Vector3 otherBoidPosition = otherBoid.transform.position;
+    //         float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
+    //         if (dist < boidSettings.cohesionRange)
+    //         {
+    //             positionToMoveTowards += otherBoidPosition;
+    //             numOfBoidsInFlock++;
+    //         }
+    //     }
+    //     if (numOfBoidsInFlock > 0)
+    //     {
+    //         positionToMoveTowards /= (float)numOfBoidsInFlock;
+    //         Vector3 cohesionDirection = positionToMoveTowards - currBoidPosition;
+    //         cohesionDirection.Normalize();
+    //         cohesionVelocity = cohesionDirection * boidSettings.cohesionFactor;
+    //     }
+
+    //     return cohesionVelocity;
+    // }
 
     Vector3 Cohesion(List<Boid> boids)
     {
