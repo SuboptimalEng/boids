@@ -206,12 +206,16 @@ public class Boid : MonoBehaviour
         if (numOfBoidsToAvoid != 0)
         {
             separationVelocity /= (float)numOfBoidsToAvoid;
+            // normalized values look less cool in the simulation
+            // separationVelocity.Normalize();
             separationVelocity *= boidSettings.separationFactor;
         }
 
         if (numOfBoidsToAlignWith != 0)
         {
             alignmentVelocity /= (float)numOfBoidsToAlignWith;
+            // normalized values look less cool in the simulation
+            // alignmentVelocity.Normalize();
             alignmentVelocity *= boidSettings.alignmentFactor;
         }
 
@@ -361,6 +365,37 @@ public class Boid : MonoBehaviour
         separationVelocity *= boidSettings.separationFactor;
 
         return separationVelocity;
+    }
+
+    Vector3 AlignmentV0(List<Boid> boids)
+    {
+        int numOfBoidsToAlignWith = 0;
+        Vector3 alignmentVelocity = Vector3.zero;
+        Vector3 currBoidPosition = transform.position;
+
+        foreach (Boid otherBoid in boids)
+        {
+            if (ReferenceEquals(gameObject, otherBoid.gameObject))
+            {
+                continue;
+            }
+
+            Vector3 otherBoidPosition = otherBoid.transform.position;
+            float dist = Vector3.Distance(currBoidPosition, otherBoidPosition);
+            if (dist < boidSettings.alignmentRange)
+            {
+                alignmentVelocity += otherBoid.velocity;
+                numOfBoidsToAlignWith++;
+            }
+        }
+
+        if (numOfBoidsToAlignWith > 0)
+        {
+            alignmentVelocity /= (float)numOfBoidsToAlignWith;
+            alignmentVelocity *= boidSettings.alignmentFactor;
+        }
+
+        return alignmentVelocity;
     }
 
     Vector3 Alignment(List<Boid> boids)

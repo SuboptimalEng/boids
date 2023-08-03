@@ -80,12 +80,16 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     if (numOfBoidsToAvoid != 0)
     {
         boids[id.x].separationVelocity /= (float)numOfBoidsToAvoid;
+        // normalized values look less cool in the simulation
+        // boids[id.x].separationVelocity = normalize(boids[id.x].separationVelocity);
         boids[id.x].separationVelocity *= separationFactor;
     }
 
     if (numOfBoidsToAlignWith != 0)
     {
         boids[id.x].alignmentVelocity /= (float)numOfBoidsToAlignWith;
+        // normalized values look less cool in the simulation
+        // boids[id.x].alignmentVelocity = normalize(boids[id.x].alignmentVelocity);
         boids[id.x].alignmentVelocity *= alignmentFactor;
     }
 

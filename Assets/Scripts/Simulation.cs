@@ -55,6 +55,15 @@ public class Simulation : MonoBehaviour
     [RangeWithStep(0, 0.2f, 0.02f)]
     public float cohesionFactor;
 
+    // todo: maybe normalize values
+    // normalized values look less cool in the simulation
+    // [RangeWithStep(0, 0.5f, 0.05f)]
+    // public float separationFactor;
+    // [RangeWithStep(0, 0.5f, 0.05f)]
+    // public float alignmentFactor;
+    // [RangeWithStep(0, 0.5f, 0.05f)]
+    // public float cohesionFactor;
+
     [Header("Boid Speed Settings")]
     [RangeWithStep(0, 5, 0.25f)]
     public float minSpeed;
