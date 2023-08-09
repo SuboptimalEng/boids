@@ -351,7 +351,6 @@ public class Boid : MonoBehaviour
     //     int numOfBoidsToAvoid = 0;
     //     Vector3 separationVelocity = Vector3.zero;
     //     Vector3 currBoidPosition = transform.position;
-
     //     foreach (Boid otherBoid in boids)
     //     {
     //         if (ReferenceEquals(gameObject, otherBoid.gameObject))
@@ -369,13 +368,11 @@ public class Boid : MonoBehaviour
     //             numOfBoidsToAvoid++;
     //         }
     //     }
-
     //     if (numOfBoidsToAvoid > 0)
     //     {
     //         separationVelocity /= (float)numOfBoidsToAvoid;
     //         separationVelocity *= boidSettings.separationFactor;
     //     }
-
     //     return separationVelocity;
     // }
 

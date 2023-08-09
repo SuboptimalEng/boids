@@ -184,6 +184,36 @@ public class Simulation : MonoBehaviour
         }
     }
 
+    // void RunBoidUpdateV3Code()
+    // {
+    //     BoidCompute[] boidData = new BoidCompute[numberOfBoids];
+    //     for (int i = 0; i < boids.Count; i++)
+    //     {
+    //         boidData[i] = boids[i].GetComputeShaderData();
+    //     }
+    //     ComputeBuffer boidBuffer = new ComputeBuffer(numberOfBoids, BoidCompute.Size);
+    //     boidBuffer.SetData(boidData);
+    //     compute.SetBuffer(0, "boids", boidBuffer);
+    //     compute.SetInt("numberOfBoids", boids.Count);
+    //     compute.SetFloat("separationRange", separationRange);
+    //     compute.SetFloat("alignmentRange", alignmentRange);
+    //     compute.SetFloat("cohesionRange", cohesionRange);
+    //     compute.SetFloat("separationFactor", separationFactor);
+    //     compute.SetFloat("alignmentFactor", alignmentFactor);
+    //     compute.SetFloat("cohesionFactor", cohesionFactor);
+    //     compute.Dispatch(0, 128, 1, 1);
+    //     boidBuffer.GetData(boidData);
+    //     for (int i = 0; i < boids.Count; i++)
+    //     {
+    //         boids[i].UpdateBoidV3(
+    //             boidData[i].separationVelocity,
+    //             boidData[i].alignmentVelocity,
+    //             boidData[i].cohesionVelocity
+    //         );
+    //     }
+    //     boidBuffer.Release();
+    // }
+
     void RunBoidUpdateV3()
     {
         // note: set up compute shader data
