@@ -52,7 +52,7 @@ public class Simulation : MonoBehaviour
     [RangeWithStep(0, 1, 0.1f)]
     public float alignmentFactor;
 
-    [RangeWithStep(0, 0.2f, 0.02f)]
+    [RangeWithStep(0, 0.2f, 0.025f)]
     public float cohesionFactor;
 
     // todo: maybe normalize values

@@ -605,7 +605,7 @@ MonoBehaviour:
   mapWidth: 9.5
   startRadius: 5
   numberOfBoids: 1000
-  boidScale: 0.4
+  boidScale: 0.6
   boidPrefab: {fileID: 4308843329111450751, guid: 75c96cdbece6040a59e1511bd449cccf,
     type: 3}
   boidColor: {r: 1, g: 0, b: 0, a: 1}
@@ -614,9 +614,9 @@ MonoBehaviour:
   separationRange: 1
   alignmentRange: 2
   cohesionRange: 3
-  separationFactor: 0.4
+  separationFactor: 0.2
   alignmentFactor: 0.1
-  cohesionFactor: 0.099999994
+  cohesionFactor: 0.1
   minSpeed: 0.5
   maxSpeed: 1.5
   rotationSpeed: 10
