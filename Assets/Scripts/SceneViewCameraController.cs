@@ -21,14 +21,16 @@ public class SceneViewCameraController : MonoBehaviour
 
     void Update()
     {
+        // note: uncomment these to enable camera movement in the game scene
+
         // mouse left-click drag
-        HandleCameraDrag();
+        // HandleCameraDrag();
 
         // mouse right-click rotation
-        HandleCameraRotation();
+        // HandleCameraRotation();
 
         // scroll wheel zoom
-        HandleCameraZoom();
+        // HandleCameraZoom();
 
         // WASD keys movement
         // HandleCameraMovement();
