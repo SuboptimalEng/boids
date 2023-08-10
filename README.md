@@ -24,7 +24,7 @@ Simulating boids.
   - visualizing all boids in a single shader
   - normalizing separation + alignment for a more accurate simulation
 
-## References
+## Resources
 
 - [Boids by Craig Reynolds](https://www.red3d.com/cwr/boids/)
 - [Ben Eater's Boids Simulation](https://eater.net/boids)
