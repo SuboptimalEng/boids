@@ -6,8 +6,6 @@ Simulating boids.
 
 [Coding Boids (Flocking Simulation)](https://www.youtube.com/watch?v=MSZ7nqqgVKc)
 
-<img src="/_thumbnails/boids-01.png">
-
 <img src="/_thumbnails/boids-02.png">
 
 ## Notes
