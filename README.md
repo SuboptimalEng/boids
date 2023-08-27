@@ -2,9 +2,9 @@
 
 Boids is an algorithm developed by Craig Reynolds in 1986. It aims to emulate the flocking behavior of birds by applying three simple rules: separation, alignment, and cohesion.
 
-## Demo
+## Video
 
-- [YouTube Video - Coding Boids (Flocking Simulation)](https://www.youtube.com/watch?v=MSZ7nqqgVKc)
+- [Coding Boids (Flocking Simulation) -> https://www.youtube.com/watch?v=MSZ7nqqgVKc](https://www.youtube.com/watch?v=MSZ7nqqgVKc)
 
   <img src="/_thumbnails/boids-02.png">
 
