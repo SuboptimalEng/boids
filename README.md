@@ -1,6 +1,6 @@
 # 🐟 Boids
 
-Simulating boids.
+Boids is an algorithm developed by Craig Reynolds in 1986. It aims to emulate the flocking behavior of birds by applying three simple rules: separation, alignment, and cohesion.
 
 ## Demo
 
