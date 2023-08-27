@@ -4,7 +4,7 @@ Boids is an algorithm developed by Craig Reynolds in 1986. It aims to emulate th
 
 ## Demo
 
-- [Coding Boids (Flocking Simulation)](https://www.youtube.com/watch?v=MSZ7nqqgVKc)
+- [YouTube Video - Coding Boids (Flocking Simulation)](https://www.youtube.com/watch?v=MSZ7nqqgVKc)
 
   <img src="/_thumbnails/boids-02.png">
 
